@@ -2,7 +2,7 @@ package com.diagnomind.web_server.domain.training_data.model;
 
 import java.util.List;
 
-import com.diagnomind.web_server.domain.train_image.model.TrainImage;
+import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,5 +22,5 @@ public class TrainingData {
     private Integer id;
 
     @OneToMany(mappedBy = "id")
-    private List<TrainImage> trainingImages;
+    private List<TrainingImage> trainingImages;
 }

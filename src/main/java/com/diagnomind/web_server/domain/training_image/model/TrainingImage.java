@@ -1,4 +1,4 @@
-package com.diagnomind.web_server.domain.train_image.model;
+package com.diagnomind.web_server.domain.training_image.model;
 
 import com.diagnomind.web_server.domain.image.model.Image;
 import com.diagnomind.web_server.domain.training_data.model.TrainingData;
@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table
-public class TrainImage {
+public class TrainingImage {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
 
