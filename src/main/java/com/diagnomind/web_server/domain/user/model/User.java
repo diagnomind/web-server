@@ -2,6 +2,7 @@ package com.diagnomind.web_server.domain.user.model;
 
 import java.util.List;
 
+import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.request.model.Request;
 
 import jakarta.persistence.Column;
@@ -21,8 +22,10 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ManyToOne
     private Integer uid;
+
+    @ManyToOne
+    private Hospital hospital;
 
     @Column(nullable = false)
     private String name;

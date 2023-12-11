@@ -17,9 +17,9 @@ import jakarta.persistence.Table;
 @Table
 public class Hospital {
     enum SubscriptionPlan {
-        None,
-        Standard,
-        Deluxe,
+        NONE,
+        STANDARD,
+        DELUXE,
     }
 
     @SuppressWarnings("unused")
