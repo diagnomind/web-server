@@ -13,9 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @Table
+@Getter
 public class User {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
