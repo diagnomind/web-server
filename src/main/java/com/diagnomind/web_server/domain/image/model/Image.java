@@ -30,6 +30,4 @@ public class Image {
     @JoinColumn(nullable = true)
     private Request request;
 
-
-
 }
