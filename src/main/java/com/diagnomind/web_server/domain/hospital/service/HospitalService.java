@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
 import com.diagnomind.web_server.domain.user.model.User;
-import com.diagnomind.web_server.domain.user.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -14,41 +13,40 @@ import lombok.AllArgsConstructor;
 public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
-    private final UserRepository userRepository;
 
-    Optional<User> addUser(Integer gid, User user) {
+    public Optional<User> addUser(Integer gid, User user) {
         
     }
 
-    Optional<User> getUser(Integer gid, Integer uid) {
+    public Optional<User> getUser(Integer gid, Integer uid) {
 
     }
 
-    List<User> getAllUsers(Integer gid) {
+    public List<User> getAllUsers(Integer gid) {
 
     }
 
-    Optional<User> modifyUser(User user) {
+    public Optional<User> modifyUser(User user) {
 
     }
 
-    void addHospital(Hospital hospital) {
+    public void addHospital(Hospital hospital) {
 
     }
 
-    void getHospital(Integer gid) {
+    public void getHospital(Integer gid) {
 
     }
 
-    List<Hospital> getAllHospitals() {
+    public List<Hospital> getAllHospitals() {
 
     }
 
-    Optional<Hospital> modifyHospital(Hospital hospital) {
+    public Optional<Hospital> modifyHospital(Hospital hospital) {
 
     }
 
-    void deleteHospital(Integer gid) {
+    public void deleteHospital(Integer gid) {
 
     }
 }
