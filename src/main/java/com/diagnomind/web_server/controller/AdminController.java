@@ -2,6 +2,7 @@ package com.diagnomind.web_server.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,11 @@ public class AdminController {
                 .addUser(user.getHospital().getGid(), user)
                 .map(newUser -> new ResponseEntity<>(newUser, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE));
+    }
+
+    @DeleteMapping(value = "/deleteUser")
+    public ResponseEntity deleteUser() {
+        return hospitalService;
     }
 
 }

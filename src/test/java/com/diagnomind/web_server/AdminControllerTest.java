@@ -53,7 +53,7 @@ public class AdminControllerTest extends EasyMockSupport {
         assertThrows(Exception.class, () -> {
             mockMvc.perform(MockMvcRequestBuilders.post("/admin/createUser")
             .content(objectMapper.writeValueAsString(requestBody))
-            .contentType(MediaType.APPLICATION_JSON));
+            .contentType(MediaType.APPLICATION_CBOR));
         });
     }
 
