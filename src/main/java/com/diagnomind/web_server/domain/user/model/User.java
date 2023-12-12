@@ -14,12 +14,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table
 @Getter
-@NoArgsConstructor
+@Setter
 public class User {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
@@ -43,10 +43,11 @@ public class User {
     @OneToMany(mappedBy = "id")
     private List<Request> requests;
 
-    public void update(User updatedUser) {
+    public User update(User updatedUser) {
         this.name = updatedUser.getName();
         this.surname = updatedUser.getSurname();
         this.ssn = updatedUser.getSsn();
+        return this;
     }
 
 }
