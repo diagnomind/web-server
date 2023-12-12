@@ -13,12 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table
 @Getter
+@Setter
 public class Hospital {
-    enum SubscriptionPlan {
+    public enum SubscriptionPlan {
         NONE,
         STANDARD,
         DELUXE,
@@ -35,7 +37,7 @@ public class Hospital {
     private String name;
 
     @OneToMany(mappedBy = "uid")
-    private List<User> user;
+    private List<User> users;
 
     @Column(nullable = false)
     private SubscriptionPlan subscriptionPlan;
@@ -45,4 +47,12 @@ public class Hospital {
 
     @Column(nullable = false)
     private Date subsriptionEnd;
+
+    public Hospital update(Hospital hospital) {
+        this.name = hospital.getName();
+        this.subscriptionPlan = hospital.getSubscriptionPlan();
+        this.subscriptionStart = hospital.getSubscriptionStart();
+        this.subsriptionEnd = hospital.getSubsriptionEnd();
+        return this;
+    }
 }
