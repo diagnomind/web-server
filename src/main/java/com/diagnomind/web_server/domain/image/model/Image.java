@@ -14,16 +14,17 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "image")
 public class Image {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "image_data")
     private List<Byte> imageData;
 
     @OneToOne

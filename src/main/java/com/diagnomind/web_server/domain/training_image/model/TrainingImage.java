@@ -13,16 +13,17 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "training_image")
 public class TrainingImage {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_correct_diagnosis")
     private boolean isCorrectDiagnosis;
 
     @OneToOne

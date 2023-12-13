@@ -22,8 +22,8 @@ import com.diagnomind.web_server.domain.user.model.User;
 
 class HospitalServiceTest extends EasyMockSupport {
 
-    private static final Integer GID = 1;
-    private static final Integer UID = 1;
+    private static final Long GID = 1L;
+    private static final Long UID = 1L;
 
     private Hospital hospital;
     private HospitalService hospitalService;

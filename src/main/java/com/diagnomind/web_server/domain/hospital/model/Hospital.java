@@ -15,11 +15,12 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table
 @Getter
 @Setter
+@Entity
+@Table(name = "hospital")
 public class Hospital {
+    
     public enum SubscriptionPlan {
         NONE,
         STANDARD,
@@ -31,21 +32,22 @@ public class Hospital {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer gid;
+    @Column(name = "gid")
+    private Long gid;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name")
     private String name;
 
     @OneToMany(mappedBy = "uid")
     private List<User> users;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "subscription_plan")
     private SubscriptionPlan subscriptionPlan;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "subscription_start")
     private Date subscriptionStart;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "subscription_end")
     private Date subsriptionEnd;
 
     public Hospital update(Hospital hospital) {

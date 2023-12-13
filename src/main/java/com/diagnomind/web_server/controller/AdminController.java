@@ -32,7 +32,7 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/deleteUser/{gid}/{uid}", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<Object> deleteUser(@PathVariable int gid, @PathVariable int uid) {
+    public ResponseEntity<Object> deleteUser(@PathVariable long gid, @PathVariable long uid) {
         return hospitalService.deleteUser(gid, uid) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
@@ -51,7 +51,7 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<Object> deleteHospital(@PathVariable int gid) {
+    public ResponseEntity<Object> deleteHospital(@PathVariable long gid) {
         return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
