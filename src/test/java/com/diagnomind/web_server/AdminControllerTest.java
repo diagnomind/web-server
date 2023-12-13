@@ -1,59 +1,112 @@
 package com.diagnomind.web_server;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
 
+import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.diagnomind.web_server.controller.AdminController;
-import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
+import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
 import com.diagnomind.web_server.domain.user.model.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebMvcTest(AdminController.class)
 class AdminControllerTest extends EasyMockSupport {
-    
-    private MockMvc mockMvc;
-    private ObjectMapper objectMapper;
 
-    private HospitalService hospitalService;
-    private HospitalRepository mockHospitalRepository;
+    private static final Integer GID = 1;
+    private static final Integer UID = 1;
+
+    private HospitalService mockHospitalService;
+    private AdminController adminController;
+    private Hospital hospital;
 
     @BeforeEach
-    public void setup() {
-        mockHospitalRepository = createStrictMock(HospitalRepository.class);
-        hospitalService = new HospitalService(mockHospitalRepository);
+    void setUp() {
+        mockHospitalService = createStrictMock(HospitalService.class);
+        adminController = new AdminController(mockHospitalService);
+        hospital = new Hospital();
+        hospital.setGid(GID);
     }
 
     @Test
-    void createUserTest() throws Exception {
-        User requestBody = new User();
-        //fail("Check this test function: createUserTest");
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/createUser")
-            .content(objectMapper.writeValueAsString(requestBody))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk());
+    void createUserTest() {
+        User user = new User();
+        user.setHospital(hospital);
+        EasyMock.expect(mockHospitalService.addUser(GID, user)).andReturn(Optional.of(user));
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<User> response = adminController.createUser(user);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(user, response.getBody());
+        EasyMock.verify(mockHospitalService);
     }
 
     @Test
-    void createUserTestThrowException() {
-        User requestBody = new User();
-        //fail("Check this test function: createUserTestThrowException");
-
-        assertThrows(Exception.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders.post("/admin/createUser")
-            .content(objectMapper.writeValueAsString(requestBody))
-            .contentType(MediaType.APPLICATION_CBOR));
-        });
+    void deleteUserCorrectTest() {
+        EasyMock.expect(mockHospitalService.deleteUser(GID, UID)).andReturn(true);
+        EasyMock.replay(mockHospitalService);
+        assertEquals(HttpStatus.OK, adminController.deleteUser(GID, UID).getStatusCode());
+        EasyMock.verify(mockHospitalService);
     }
 
+    @Test
+    void deleteUserFailTest() {
+        EasyMock.expect(mockHospitalService.deleteUser(GID, UID)).andReturn(false);
+        EasyMock.replay(mockHospitalService);
+        assertEquals(HttpStatus.NOT_ACCEPTABLE, adminController.deleteUser(GID, UID).getStatusCode());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void modifyUserTest() {
+        User user = new User();
+        user.setHospital(hospital);
+        EasyMock.expect(mockHospitalService.modifyUser(GID, user)).andReturn(Optional.of(user));
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<User> response = adminController.modifyUser(user);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void createHospitalTest() {
+        EasyMock.expect(mockHospitalService.addHospital(hospital)).andReturn(hospital);
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<Hospital> response = adminController.createHospital(hospital);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(hospital, response.getBody());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void deleteHospitalCorrectTest() {
+        EasyMock.expect(mockHospitalService.deleteHospital(GID)).andReturn(true);
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<Object> response = adminController.deleteHospital(GID);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void deleteHospitalFailTest() {
+        EasyMock.expect(mockHospitalService.deleteHospital(GID)).andReturn(false);
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<Object> response = adminController.deleteHospital(GID);
+        assertEquals(HttpStatus.NOT_ACCEPTABLE, response.getStatusCode());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void modifyHospitalTest() {
+        EasyMock.expect(mockHospitalService.modifyHospital(hospital)).andReturn(Optional.of(hospital));
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<Hospital> response = adminController.modifyHospital(hospital);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(hospital, response.getBody());
+        EasyMock.verify(mockHospitalService);
+    }
 }

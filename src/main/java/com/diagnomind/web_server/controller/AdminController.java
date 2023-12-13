@@ -1,6 +1,5 @@
 package com.diagnomind.web_server.controller;
 
-import org.easymock.internal.matchers.Null;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,9 +32,9 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/deleteUser/{gid}/{uid}", consumes = { "application/json", "application/xml" })
-    public ResponseEntity deleteUser(@PathVariable int gid, @PathVariable int uid) {
-        return (hospitalService.deleteUser(gid, uid)) ? new ResponseEntity<>(HttpStatus.OK) : 
-                new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<Object> deleteUser(@PathVariable int gid, @PathVariable int uid) {
+        return hospitalService.deleteUser(gid, uid) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PutMapping(value = "/modifyUser", consumes = { "application/json", "application/xml" })
@@ -48,14 +47,13 @@ public class AdminController {
 
     @PostMapping(value = "/createHospital", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
-        return (hospital.equals(null)) ? new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE) :
-            new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
+        return new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
     }
 
-   @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
-    public ResponseEntity deleteHospital(@PathVariable int gid) {
-        return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK) : 
-                new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<Object> deleteHospital(@PathVariable int gid) {
+        return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PutMapping(value = "/modifyHospital", consumes = { "application/json", "application/xml" })
@@ -65,5 +63,4 @@ public class AdminController {
                 .map(modifiedHospital -> new ResponseEntity<>(modifiedHospital, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
-
 }
