@@ -33,13 +33,10 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/deleteUser/{gid}/{uid}", consumes = { "application/json", "application/xml" })
-    //public ResponseEntity<String> deleteUser(@PathVariable int gid, @PathVariable int uid) {
-        // return hospitalService
-        //         .deleteUser(hospitalService.getUser(gid, uid)
-        //         .map(user -> new ResponseEntity<>(HttpStatus.OK))
-        //         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)));
-        
-    //}
+    public ResponseEntity deleteUser(@PathVariable int gid, @PathVariable int uid) {
+        return (hospitalService.deleteUser(gid, uid)) ? new ResponseEntity<>(HttpStatus.OK) : 
+                new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    }
 
     @PutMapping(value = "/modifyUser", consumes = { "application/json", "application/xml" })
     public ResponseEntity<User> modifyUser(@RequestBody User user) {
@@ -53,6 +50,12 @@ public class AdminController {
     public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
         return (hospital.equals(null)) ? new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE) :
             new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
+    }
+
+   @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
+    public ResponseEntity deleteHospital(@PathVariable int gid) {
+        return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK) : 
+                new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PutMapping(value = "/modifyHospital", consumes = { "application/json", "application/xml" })

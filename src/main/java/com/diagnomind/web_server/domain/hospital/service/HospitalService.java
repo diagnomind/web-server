@@ -59,14 +59,15 @@ public class HospitalService {
                         .map(foundUser -> foundUser.update(modifiedUser)));
     }
 
-    public void deleteUser(Integer gid, Integer uid) {
-        hospitalRepository
+    public boolean deleteUser(Integer gid, Integer uid) {
+        return hospitalRepository
                 .findById(gid)
-                .ifPresent(hospital -> hospital
+                .map(hospital -> hospital
                         .getUsers()
                         .removeIf(user -> user
                                 .getUid()
-                                .equals(uid)));
+                                .equals(uid)))
+                .orElse(false);
     }
 
     public Hospital addHospital(Hospital hospital) {
