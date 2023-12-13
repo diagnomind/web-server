@@ -92,6 +92,6 @@ public class HospitalService {
 
     public boolean deleteHospital(Integer gid) {
         hospitalRepository.deleteById(gid);
-        return hospitalRepository.existsById(gid);
+        return !hospitalRepository.existsById(gid);
     }
 }

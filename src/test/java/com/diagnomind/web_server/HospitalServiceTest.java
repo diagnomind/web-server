@@ -1,6 +1,7 @@
 package com.diagnomind.web_server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
@@ -60,7 +61,7 @@ class HospitalServiceTest extends EasyMockSupport {
 
     @Test
     void getAllUsersTest() {
-        List<User> allUsersList = new ArrayList<User>();
+        List<User> allUsersList = new ArrayList<>();
         hospital.setUsers(allUsersList);
         EasyMock.expect(mockHospitalRepository.findById(GID)).andReturn(Optional.of(hospital));
         EasyMock.replay(mockHospitalRepository);
@@ -96,7 +97,7 @@ class HospitalServiceTest extends EasyMockSupport {
         hospital.getUsers().add(user);
         EasyMock.expect(mockHospitalRepository.findById(GID)).andReturn(Optional.of(hospital));
         EasyMock.replay(mockHospitalRepository);
-        hospitalService.deleteUser(GID, UID);
+        assertTrue(hospitalService.deleteUser(GID, UID));
         assertTrue(hospital.getUsers().isEmpty());
         EasyMock.verify(mockHospitalRepository);
     }
@@ -146,10 +147,20 @@ class HospitalServiceTest extends EasyMockSupport {
     }
 
     @Test
-    void deleteHospitalTest() {
+    void deleteHospitalCorrectTest() {
         mockHospitalRepository.deleteById(GID);
+        EasyMock.expect(mockHospitalRepository.existsById(GID)).andReturn(false);
         EasyMock.replay(mockHospitalRepository);
-        hospitalService.deleteHospital(GID);
+        assertTrue(hospitalService.deleteHospital(GID));
+        EasyMock.verify(mockHospitalRepository);
+    }
+
+    @Test
+    void deleteHospitalFailTest() {
+        mockHospitalRepository.deleteById(GID);
+        EasyMock.expect(mockHospitalRepository.existsById(GID)).andReturn(true);
+        EasyMock.replay(mockHospitalRepository);
+        assertFalse(hospitalService.deleteHospital(GID));
         EasyMock.verify(mockHospitalRepository);
     }
 }
