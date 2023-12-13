@@ -10,10 +10,10 @@ import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
 import com.diagnomind.web_server.domain.user.model.User;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
@@ -89,7 +89,8 @@ public class HospitalService {
                 .map(hospital -> hospital.update(modifiedHospital));
     }
 
-    public void deleteHospital(Integer gid) {
+    public boolean deleteHospital(Integer gid) {
         hospitalRepository.deleteById(gid);
+        return hospitalRepository.existsById(gid);
     }
 }

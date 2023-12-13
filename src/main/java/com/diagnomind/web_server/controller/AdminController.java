@@ -1,20 +1,24 @@
 package com.diagnomind.web_server.controller;
 
+import org.easymock.internal.matchers.Null;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
 import com.diagnomind.web_server.domain.user.model.User;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -28,9 +32,35 @@ public class AdminController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE));
     }
 
-    @DeleteMapping(value = "/deleteUser")
-    public ResponseEntity deleteUser() {
-        return hospitalService;
+    @DeleteMapping(value = "/deleteUser/{gid}/{uid}", consumes = { "application/json", "application/xml" })
+    //public ResponseEntity<String> deleteUser(@PathVariable int gid, @PathVariable int uid) {
+        // return hospitalService
+        //         .deleteUser(hospitalService.getUser(gid, uid)
+        //         .map(user -> new ResponseEntity<>(HttpStatus.OK))
+        //         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)));
+        
+    //}
+
+    @PutMapping(value = "/modifyUser", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<User> modifyUser(@RequestBody User user) {
+        return hospitalService
+                .modifyUser(user.getHospital().getGid(), user)
+                .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
+    }
+
+    @PostMapping(value = "/createHospital", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
+        return (hospital.equals(null)) ? new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE) :
+            new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/modifyHospital", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<Hospital> modifyHospital(@RequestBody Hospital hospital) {
+        return hospitalService
+                .modifyHospital(hospital)
+                .map(modifiedHospital -> new ResponseEntity<>(modifiedHospital, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
 }
