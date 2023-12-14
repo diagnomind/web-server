@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Entity
-@Table
+@Table(name = "training_image")
 @Getter
 public class TrainingImage {
     @SuppressWarnings("unused")
@@ -22,9 +22,10 @@ public class TrainingImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_correct_diagnosis")
     private boolean isCorrectDiagnosis;
 
     @OneToOne

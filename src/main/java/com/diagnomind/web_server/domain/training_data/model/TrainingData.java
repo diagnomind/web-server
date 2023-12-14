@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,8 @@ public class TrainingData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Long id;
 
     public enum Type {
         Cerebral,

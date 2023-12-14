@@ -16,28 +16,29 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table
 @Getter
 @Setter
+@Entity
+@Table(name = "user")
 public class User {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer uid;
+    @Column(name = "uid")
+    private Long uid;
 
     @ManyToOne
     private Hospital hospital;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "surname")
     private String surname;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "ssn")
     private String ssn;  // Social security number
 
     @OneToMany(mappedBy = "id")

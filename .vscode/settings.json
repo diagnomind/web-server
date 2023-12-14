@@ -1,5 +1,9 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "files.autoSave": "afterDelay",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "sonarlint.connectedMode.project": {
+        "connectionId": "http-localhost-9000",
+        "projectKey": "diagnomind"
+    }
 }

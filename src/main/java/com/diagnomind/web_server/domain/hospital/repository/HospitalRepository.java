@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 
-public interface HospitalRepository extends CrudRepository<Hospital, Integer> {
+public interface HospitalRepository extends CrudRepository<Hospital, Long> {
     
 }
