@@ -1,4 +1,4 @@
-package com.diagnomind.web_server;
+package com.diagnomind.web_server.Controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Optional;
