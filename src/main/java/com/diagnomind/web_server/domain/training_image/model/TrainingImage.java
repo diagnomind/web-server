@@ -12,10 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "training_image")
 @Getter
+@Setter
 public class TrainingImage {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;

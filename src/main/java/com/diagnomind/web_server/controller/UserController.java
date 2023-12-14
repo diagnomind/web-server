@@ -20,8 +20,8 @@ public class UserController {
     
     private final TrainingDataService trainingDataService;
 
-    @PostMapping(value = "/igoArkazkia", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<Image> igoArgazia(@RequestBody TrainingImage img) {
+    @PostMapping(value = "/uploadImage", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<Image> uploadImage(@RequestBody TrainingImage img) {
         return (trainingDataService.addTrainImage(img)) ? new ResponseEntity<>(HttpStatus.CREATED) :
                 new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }

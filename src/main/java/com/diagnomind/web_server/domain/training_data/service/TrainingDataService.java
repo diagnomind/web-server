@@ -1,7 +1,6 @@
 package com.diagnomind.web_server.domain.training_data.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -16,32 +15,33 @@ import lombok.RequiredArgsConstructor;
 public class TrainingDataService {
 
     private final TrainingDataRepository trainingDataRepository;
+    private static final Long ID_LONG = 1L;
 
     public Boolean addTrainImage(TrainingImage trainImage) {
         return trainingDataRepository
-                .findById(1L)
+                .findById(ID_LONG)
                 .map(dataTrain -> dataTrain
                         .getTrainingImages()
                         .add(trainImage))
                 .orElse(false);
     }
-    
-//     no implemented
-    List<TrainingImage> getTrainingImages() {
+
+    public List<TrainingImage> getTrainingImages() {
         return trainingDataRepository 
-                .findById(1L)
+                .findById(ID_LONG)
                 .map(TrainingData::getTrainingImages)
                 .orElse(List.of());
     }
-  
-//    no implemented
-    // Boolean deleteTrainingData(Integer id) {
-    //     return trainingDataRepository
-    //             .findById(1)
-    //             .map(traininData -> traininData
-    //                     .getTrainingImages()
-    //                     .remove())
-    //             .orElse(false);
-    // }
+
+    public Boolean deleteTrainingData(Long id) {
+        return trainingDataRepository
+                .findById(ID_LONG)
+                .map(trainingData -> trainingData
+                        .getTrainingImages()
+                        .removeIf(image -> image
+                                .getId().equals(id)
+                        ))
+                .orElse(false);
+    }
 
 }
