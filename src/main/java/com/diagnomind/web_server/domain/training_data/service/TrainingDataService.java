@@ -19,7 +19,7 @@ public class TrainingDataService {
 
     public Boolean addTrainImage(TrainingImage trainImage) {
         return trainingDataRepository
-                .findById(1)
+                .findById(1L)
                 .map(dataTrain -> dataTrain
                         .getTrainingImages()
                         .add(trainImage))
@@ -29,7 +29,7 @@ public class TrainingDataService {
 //     no implemented
     List<TrainingImage> getTrainingImages() {
         return trainingDataRepository 
-                .findById(1)
+                .findById(1L)
                 .map(TrainingData::getTrainingImages)
                 .orElse(List.of());
     }
