@@ -8,7 +8,7 @@ create table if not exists `Diagnomind`.`hospital` (
   `subscription_plan` int,
   `subscriptionStart` date,
   `subscriptionEnd`   date,
-  primary key (gid))
+  primary key (`gid`))
 engine = InnoDB;
 
 create table if not exists `Diagnomind`.`user` (
@@ -17,21 +17,24 @@ create table if not exists `Diagnomind`.`user` (
   `surname`       varchar(255),
   `ssn`           varchar(255),
   `hospital_gid`  bigint,
-  primary key (UID))
+  primary key (`uid`), 
+  foreign key (`hospital_gid`) references `hospital` (`gid`))
 engine = InnoDB;
 
 create table if not exists `Diagnomind`.`image` (
   `id`          bigint,
-  `imageData`   mediumblob not null, -- blob pilla 32Mb
+  `imageData`   mediumblob not null, -- blob 32Mb
   `request_id`  bigint,
-  primary key(id)) 
+  primary key(`id`),
+  foreign key (`request_id`) references `request` (`id`)) 
 engine = InnoDB;
 
 create table if not exists `Diagnomind`.`feedback` (
   `id`                  bigint,
   `isCorrectDiagnosis`  bool,
   `request_id`          bigint,
-  primary key(id))
+  primary key(`id`),
+  foreign key (`request_id`) references `request` (`id`))
 engine = InnoDB;
 
 create table if not exists `Diagnomind`.`request` (
@@ -40,12 +43,15 @@ create table if not exists `Diagnomind`.`request` (
   `image_id`    varchar(255),
   `feedback_id` bigint,
   `user_uid`    bigint,
-  primary key (id))
+  primary key (`id`),
+  foreign key (`user_uid`) references `user` (`uid`),
+  foreign key (`feedback_id`) references `feedback` (`id`),
+  foreign key (`image_id`) references `image` (`id`))
 engine = InnoDB;
 
 create table if not exists `Diagnomind`.`TrainingData` (
   `id`  bigint,
-  primary key(id))
+  primary key(`id`))
 engine = InnoDB;
 
 create table if not exists `Diagnomind`.`TrainingImage` (
@@ -53,5 +59,6 @@ create table if not exists `Diagnomind`.`TrainingImage` (
   `isCorrectDiagnosis`  bool,
   `image_id`            bigint,
   `trainingdata_id`     bigint,
-  primary key(id))
+  primary key (`id`),
+  foreign key (`trainingdata_id`) references `trainingdata` (`id`))
 engine = InnoDB;

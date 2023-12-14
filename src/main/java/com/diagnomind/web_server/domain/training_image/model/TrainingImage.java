@@ -11,9 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @Table
+@Getter
 public class TrainingImage {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
