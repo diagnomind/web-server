@@ -2,10 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Test') {
             steps {
-                git 'https://github.com/enaut-genua/diagnomind.git'
-                bat 'mvn clean compile'
+                sh 'mvn test'
             }
         }
     }
