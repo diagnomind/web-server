@@ -4,9 +4,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                
-                powershell -File 'Jenkins_Test.ps1'
-                
+                powershell(script: "Jenkins_Test.ps1")                
             }
         }
     }
