@@ -1,4 +1,4 @@
-package com.diagnomind.web_server.Controllers;
+package com.diagnomind.web_server.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Optional;
@@ -29,7 +29,7 @@ class AdminControllerTest extends EasyMockSupport {
         mockHospitalService = createStrictMock(HospitalService.class);
         adminController = new AdminController(mockHospitalService);
         hospital = new Hospital();
-        hospital.setGid(GID);
+        hospital.setId(GID);
     }
 
     @Test

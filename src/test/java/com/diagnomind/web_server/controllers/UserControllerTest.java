@@ -1,4 +1,4 @@
-package com.diagnomind.web_server.Controllers;
+package com.diagnomind.web_server.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,7 +15,7 @@ import com.diagnomind.web_server.domain.training_data.model.TrainingData;
 import com.diagnomind.web_server.domain.training_data.service.TrainingDataService;
 import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
 
-public class UserControllerTest extends EasyMockSupport {
+class UserControllerTest extends EasyMockSupport {
     
     private static final Long ID = 1L;
 

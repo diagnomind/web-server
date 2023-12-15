@@ -1,4 +1,4 @@
-package com.diagnomind.web_server.Services;
+package com.diagnomind.web_server.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -50,7 +50,7 @@ class HospitalServiceTest extends EasyMockSupport {
     @Test
     void getUserTest() {
         User user = new User();
-        user.setUid(UID);
+        user.setId(UID);
         hospital.setUsers(new ArrayList<>());
         hospital.getUsers().add(user);
         EasyMock.expect(mockHospitalRepository.findById(GID)).andReturn(Optional.of(hospital));
@@ -73,12 +73,12 @@ class HospitalServiceTest extends EasyMockSupport {
     void modifyUserTest() {
         hospital.setUsers(new ArrayList<>());
         User user = new User();
-        user.setUid(UID);
+        user.setId(UID);
         hospital.getUsers().add(user);
         EasyMock.expect(mockHospitalRepository.findById(GID)).andReturn(Optional.of(hospital));
         EasyMock.replay(mockHospitalRepository);
         User modifiedUser = new User();
-        modifiedUser.setUid(UID);
+        modifiedUser.setId(UID);
         modifiedUser.setName("A");
         modifiedUser.setSurname("A");
         modifiedUser.setSsn("A");
@@ -93,7 +93,7 @@ class HospitalServiceTest extends EasyMockSupport {
     void deleteUserTest() {
         hospital.setUsers(new ArrayList<>());
         User user = new User();
-        user.setUid(UID);
+        user.setId(UID);
         hospital.getUsers().add(user);
         EasyMock.expect(mockHospitalRepository.findById(GID)).andReturn(Optional.of(hospital));
         EasyMock.replay(mockHospitalRepository);
@@ -130,7 +130,7 @@ class HospitalServiceTest extends EasyMockSupport {
     @Test
     void modifyHospitalTest() {
         Hospital modifiedHospital = new Hospital();
-        modifiedHospital.setGid(GID);
+        modifiedHospital.setId(GID);
         modifiedHospital.setName("A");
         modifiedHospital.setSubscriptionPlan(SubscriptionPlan.NONE);
         modifiedHospital.setSubscriptionStart(new Date(1));

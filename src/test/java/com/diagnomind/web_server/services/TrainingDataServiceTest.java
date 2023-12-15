@@ -1,4 +1,4 @@
-package com.diagnomind.web_server.Services;
+package com.diagnomind.web_server.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,7 +18,7 @@ import com.diagnomind.web_server.domain.training_data.repository.TrainingDataRep
 import com.diagnomind.web_server.domain.training_data.service.TrainingDataService;
 import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
 
-public class TrainingDataServiceTest extends EasyMockSupport {
+class TrainingDataServiceTest extends EasyMockSupport {
  
     private static final Long ID = 1L;
 
