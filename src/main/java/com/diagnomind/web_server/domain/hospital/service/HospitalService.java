@@ -34,7 +34,7 @@ public class HospitalService {
                         .getUsers()
                         .stream()
                         .filter(user -> user
-                                .getUid()
+                                .getId()
                                 .equals(uid))
                         .findFirst());
     }
@@ -53,8 +53,8 @@ public class HospitalService {
                         .getUsers()
                         .stream()
                         .filter(user -> user
-                                .getUid()
-                                .equals(modifiedUser.getUid()))
+                                .getId()
+                                .equals(modifiedUser.getId()))
                         .findFirst()
                         .map(foundUser -> foundUser.update(modifiedUser)));
     }
@@ -65,7 +65,7 @@ public class HospitalService {
                 .map(hospital -> hospital
                         .getUsers()
                         .removeIf(user -> user
-                                .getUid()
+                                .getId()
                                 .equals(uid)))
                 .orElse(false);
     }
@@ -86,7 +86,7 @@ public class HospitalService {
 
     public Optional<Hospital> modifyHospital(Hospital modifiedHospital) {
         return hospitalRepository
-                .findById(modifiedHospital.getGid())
+                .findById(modifiedHospital.getId())
                 .map(hospital -> hospital.update(modifiedHospital));
     }
 

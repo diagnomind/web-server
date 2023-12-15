@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import com.diagnomind.web_server.controller.AdminController;
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
+import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
+import com.diagnomind.web_server.domain.training_image.service.TrainingImageService;
 import com.diagnomind.web_server.domain.user.model.User;
 
 class AdminControllerTest extends EasyMockSupport {
@@ -21,13 +23,15 @@ class AdminControllerTest extends EasyMockSupport {
     private static final Long UID = 1L;
 
     private HospitalService mockHospitalService;
+    private TrainingImageService mockTrainingImageService;
     private AdminController adminController;
     private Hospital hospital;
 
     @BeforeEach
     void setUp() {
         mockHospitalService = createStrictMock(HospitalService.class);
-        adminController = new AdminController(mockHospitalService);
+        mockTrainingImageService = createStrictMock(TrainingImageService.class);
+        adminController = new AdminController(mockHospitalService, mockTrainingImageService);
         hospital = new Hospital();
         hospital.setId(GID);
     }
@@ -108,5 +112,16 @@ class AdminControllerTest extends EasyMockSupport {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(hospital, response.getBody());
         EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void uploadImageTest() {
+        TrainingImage trainingImage = new TrainingImage();
+        EasyMock.expect(mockTrainingImageService.addTrainImage(trainingImage)).andReturn(trainingImage);
+        EasyMock.replay(mockTrainingImageService);
+        ResponseEntity<TrainingImage> response = adminController.uploadImage(trainingImage);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(trainingImage, response.getBody());
+        EasyMock.verify(mockTrainingImageService);
     }
 }

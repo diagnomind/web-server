@@ -32,14 +32,11 @@ public class Hospital {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "gid")
-    private Long gid;
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false, name = "name")
     private String name;
-
-    @OneToMany(mappedBy = "uid")
-    private List<User> users;
 
     @Column(nullable = false, name = "subscription_plan")
     private SubscriptionPlan subscriptionPlan;
@@ -49,6 +46,9 @@ public class Hospital {
 
     @Column(nullable = false, name = "subscription_end")
     private Date subsriptionEnd;
+
+    @OneToMany(mappedBy = "id")
+    private List<User> users;
 
     public Hospital update(Hospital hospital) {
         this.name = hospital.getName();

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
+import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
+import com.diagnomind.web_server.domain.training_image.service.TrainingImageService;
 import com.diagnomind.web_server.domain.user.model.User;
 
 import lombok.RequiredArgsConstructor;
@@ -22,11 +24,12 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final HospitalService hospitalService;
+    private final TrainingImageService trainingImageService;
 
     @PostMapping(value = "/createUser", consumes = { "application/json", "application/xml" })
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return hospitalService
-                .addUser(user.getHospital().getGid(), user)
+                .addUser(user.getHospital().getId(), user)
                 .map(newUser -> new ResponseEntity<>(newUser, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE));
     }
@@ -40,7 +43,7 @@ public class AdminController {
     @PutMapping(value = "/modifyUser", consumes = { "application/json", "application/xml" })
     public ResponseEntity<User> modifyUser(@RequestBody User user) {
         return hospitalService
-                .modifyUser(user.getHospital().getGid(), user)
+                .modifyUser(user.getHospital().getId(), user)
                 .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
@@ -62,5 +65,10 @@ public class AdminController {
                 .modifyHospital(hospital)
                 .map(modifiedHospital -> new ResponseEntity<>(modifiedHospital, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
+    }
+
+    @PostMapping(value = "/uploadImage", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<TrainingImage> uploadImage(@RequestBody TrainingImage img) {
+        return new ResponseEntity<>(trainingImageService.addTrainImage(img), HttpStatus.OK);
     }
 }

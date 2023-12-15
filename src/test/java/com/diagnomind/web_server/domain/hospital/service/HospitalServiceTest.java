@@ -1,4 +1,4 @@
-package com.diagnomind.web_server.services;
+package com.diagnomind.web_server.domain.hospital.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.model.Hospital.SubscriptionPlan;
 import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
-import com.diagnomind.web_server.domain.hospital.service.HospitalService;
 import com.diagnomind.web_server.domain.user.model.User;
 
 class HospitalServiceTest extends EasyMockSupport {
