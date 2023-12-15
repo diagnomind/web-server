@@ -27,6 +27,6 @@ public class TrainingImage {
     @Column(nullable = false, name = "is_correct_diagnosis")
     private boolean isCorrectDiagnosis;
 
-    @OneToOne(mappedBy = "training_image_id")
+    @OneToOne(mappedBy = "trainingImage")
     private Image image;
 }

@@ -33,28 +33,3 @@ CREATE TABLE IF NOT EXISTS `image` (
   CONSTRAINT `IMAGE_PK` PRIMARY KEY(`id`),
   CONSTRAINT `IMAGE_TRAINING_IMAGE` FOREIGN KEY (`training_image_id`) REFERENCES `training_image`(`id`)
 ) ENGINE = InnoDB;
-
--- CREATE TABLE IF NOT EXISTS `feedback` (
---   `id`                    BIGINT,
---   `is_correct_diagnosis`  bool,
---   `request_id`            BIGINT,
---   PRIMARY KEY(`id`),
---   FOREIGN KEY (`request_id`) REFERENCES `request` (`id`))
--- ENGINE = InnoDB;
-
--- CREATE TABLE IF NOT EXISTS `request` (
---   `id`          BIGINT AUTO_INCREMENT,
---   `DATE`        DATE,
---   `image_id`    VARCHAR(255),
---   `feedback_id` BIGINT,
---   `user_uid`    BIGINT,
---   PRIMARY KEY (`id`),
---   FOREIGN KEY (`user_uid`) REFERENCES `user` (`uid`),
---   FOREIGN KEY (`feedback_id`) REFERENCES `feedback` (`id`),
---   FOREIGN KEY (`image_id`) REFERENCES `image` (`id`))
--- ENGINE = InnoDB;
-
--- CREATE TABLE IF NOT EXISTS `training_data` (
---   `id`  BIGINT,
---   PRIMARY KEY(`id`))
--- ENGINE = InnoDB;
