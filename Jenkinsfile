@@ -3,9 +3,9 @@ node {
     checkout scm
   }
   stage('SonarQube Analysis') {
-    def mvn = tool 'mvn';
+    def mvn = tool 'Default Maven';
     withSonarQubeEnv() {
-      sh "mvn clean verify sonar:sonar -Dsonar.projectKey=diagnomind-java -Dsonar.projectName='diagnomind-java'"
+      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=diagnomind-java -Dsonar.projectName='diagnomind-java'"
     }
   }
 }
