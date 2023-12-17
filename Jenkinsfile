@@ -1,11 +1,11 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Test') {
-            steps {
-                powershell(script: "Jenkins_Test.ps1")                
-            }
-        }
+node {
+  stage('SCM') {
+    checkout scm
+  }
+  stage('SonarQube Analysis') {
+    def mvn = tool 'Default Maven';
+    withSonarQubeEnv() {
+      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=diagnomind-java -Dsonar.projectName='diagnomind-java'"
     }
+  }
 }
