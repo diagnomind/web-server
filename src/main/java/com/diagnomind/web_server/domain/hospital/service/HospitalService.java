@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  * <p>This class is annotated with {@link org.springframework.stereotype.Service}, indicating
  * that it serves as a service component in a Spring application. It is also annotated with
  * {@link lombok.RequiredArgsConstructor}, which automatically generates a constructor with
- * required arguments based on the class fields marked with {@code final}.
+ * required arguments.
  *
  * <p>The services provided by this class include operations for managing users associated with hospitals.
  *

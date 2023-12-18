@@ -15,12 +15,19 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a hospital entity with details such as name, subscription plan, and subscription period.
+ * The class includes methods for updating hospital information.
+ */
 @Getter
 @Setter
 @Entity
 @Table(name = "hospital")
 public class Hospital {
     
+    /**
+     * Enumeration representing possible subscription plans for the hospital.
+     */
     public enum SubscriptionPlan {
         NONE,
         STANDARD,
@@ -30,26 +37,50 @@ public class Hospital {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The unique identifier for the hospital.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    /**
+     * The name of the hospital. Cannot be null.
+     */
     @Column(nullable = false, name = "name")
     private String name;
 
+    /**
+     * The subscription plan of the hospital. Cannot be null.
+     */
     @Column(nullable = false, name = "subscription_plan")
     private SubscriptionPlan subscriptionPlan;
 
+    /**
+     * The start date of the hospital's subscription. Cannot be null.
+     */
     @Column(nullable = false, name = "subscription_start")
     private Date subscriptionStart;
 
+    /**
+     * The end date of the hospital's subscription. Cannot be null.
+     */
     @Column(nullable = false, name = "subscription_end")
     private Date subsriptionEnd;
 
+    /**
+     * The list of users associated with the hospital.
+     */
     @OneToMany(mappedBy = "id")
     private List<User> users;
 
+    /**
+     * Updates the hospital information with the provided hospital's details.
+     *
+     * @param hospital The Hospital object containing the modified details to be applied.
+     * @return The updated Hospital object.
+     */
     public Hospital update(Hospital hospital) {
         this.name = hospital.getName();
         this.subscriptionPlan = hospital.getSubscriptionPlan();

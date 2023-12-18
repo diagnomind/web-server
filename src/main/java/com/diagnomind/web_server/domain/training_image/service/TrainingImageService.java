@@ -10,6 +10,18 @@ import com.diagnomind.web_server.domain.training_image.repository.TrainingImageR
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service class for managing operations related to {@link TrainingImage} entities.
+ * 
+ * <p>This class is annotated with {@link org.springframework.stereotype.Service}, indicating
+ * that it serves as a service component in a Spring application. It is also annotated with
+ * {@link lombok.RequiredArgsConstructor}, which automatically generates a constructor with
+ * required arguments.
+ * 
+ * @author Diagnomind
+ * @version 1.0
+ * @since 2023-12-15
+ */
 @Service
 @RequiredArgsConstructor
 public class TrainingImageService {
