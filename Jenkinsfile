@@ -1,8 +1,9 @@
 pipeline {
+  agent any
   stages {
     stage("Tests") {
       steps {
-        "mvn clean verify"
+        sh "mvn clean verify"
       }
     }
   }
