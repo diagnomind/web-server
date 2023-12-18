@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
 public class User {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
