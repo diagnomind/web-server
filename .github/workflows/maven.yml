@@ -28,7 +28,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B clean compile
     - name: Pass compiled classes
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: compiled-classes
         path: target/classes
@@ -45,15 +45,15 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Receive compiled classes
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: compiled-classes
     - name: Test with Maven
       run: mvn -B test
     - name: Pass compiled classes
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        name: compiled-classes
+        name: compiled-classes-with-tests
         path: target/classes
   analyze:
     runs-on: ubuntu-latest
@@ -70,9 +70,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Receive compiled classes
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
-        name: compiled-classes
+        name: compiled-classes-with-tests
     - name: Analyze SonarQube
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
