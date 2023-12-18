@@ -25,7 +25,7 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Analyze SonarQube
+    - name: Test and Analyze with SonarQube
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
