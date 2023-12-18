@@ -33,9 +33,6 @@ import lombok.RequiredArgsConstructor;
  * @author Diagnomind
  * @version 1.0
  * @since 2023-12-15
- * 
- * -- CONSTRUCTOR --
- * Circles are round
  */
 @RestController
 @RequestMapping("/admin")
@@ -124,19 +121,38 @@ public class AdminController {
      * @param hospital The Hospital object representing the hospital to be created.
      * @return A ResponseEntity containing the created Hospital object and HTTP status OK if successful,
      *         or an appropriate HTTP status if an error occurs.
+     * 
+     * @see HospitalService#addHospital(Hospital) {@link HospitalService#addHospital(Hospital)}, method
      */
     @PostMapping(value = "/createHospital", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
         return new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
     }
 
-    
+    /**
+     * Deletes a hospital from the repository based on its ID.
+     *
+     * @param gid The ID of the hospital to be deleted.
+     * @return A ResponseEntity with HTTP status OK if the hospital is successfully deleted,
+     *         or HTTP status NOT_ACCEPTABLE if the hospital deletion operation fails.
+     * 
+     * @see HospitalService#deleteHospital(Long) {@link HospitalService#deleteHospital(Long)}, method
+     */
     @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Object> deleteHospital(@PathVariable long gid) {
         return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
+    /**
+     * Modifies a hospital based on the provided modified hospital details.
+     *
+     * @param hospital The Hospital object containing the modified details to be applied.
+     * @return A ResponseEntity containing the modified Hospital object and HTTP status OK if successful,
+     *         or HTTP status NOT_MODIFIED if the hospital modification operation fails.
+     * 
+     * @see HospitalService#modifyHospital(Hospital) {@link HospitalService#modifyHospital(Hospital)}, method
+     */
     @PutMapping(value = "/modifyHospital", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Hospital> modifyHospital(@RequestBody Hospital hospital) {
         return hospitalService
@@ -145,6 +161,15 @@ public class AdminController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
+    /**
+     * Uploads a training image by adding it to the repository.
+     *
+     * @param img The TrainingImage object representing the image to be uploaded.
+     * @return A ResponseEntity containing the uploaded TrainingImage object and HTTP status OK if successful,
+     *         or an appropriate HTTP status if an error occurs.
+     * 
+     * @see TrainingImageService#addTrainImage(TrainingImage) {@link TrainingImageService#addTrainImage(TrainingImage)}, method
+     */
     @PostMapping(value = "/uploadImage", consumes = { "application/json", "application/xml" })
     public ResponseEntity<TrainingImage> uploadImage(@RequestBody TrainingImage img) {
         return new ResponseEntity<>(trainingImageService.addTrainImage(img), HttpStatus.OK);
