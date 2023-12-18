@@ -16,16 +16,51 @@ import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
 import com.diagnomind.web_server.domain.training_image.service.TrainingImageService;
 import com.diagnomind.web_server.domain.user.model.User;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * The {@code AdminController} class handles administrative operations
+ * and exposes endpoints related to administration tasks.
+ *
+ * <p>This class is annotated with {@link org.springframework.web.bind.annotation.RestController},
+ * indicating that it serves as a controller for handling RESTful web service requests.
+ * It is also annotated with {@link lombok.RequiredArgsConstructor}, which automatically generates
+ * a constructor with required arguments based on the class fields marked with {@code final}.
+ *
+ * <p>All endpoints in this controller are mapped under the base path {@code "/admin"}.
+ *
+ * @author Diagnomind
+ * @version 1.0
+ * @since 2023-12-15
+ * 
+ * -- CONSTRUCTOR --
+ * Circles are round
+ */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/admin")
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class AdminController {
 
     private final HospitalService hospitalService;
     private final TrainingImageService trainingImageService;
 
+    /**
+     * Creates a new user associated with a hospital and returns the corresponding response.
+     *
+     * <p>This method is mapped to the HTTP POST request for the path {@code "/admin/createUser"}.
+     * It consumes JSON or XML data in the request body. The method delegates the user creation
+     * operation to the {@link HospitalService} and returns an appropriate response.
+     *
+     * <p>If the user creation is successful, it responds with a status of {@link HttpStatus#CREATED}
+     * and includes the newly created user in the response body. If the user creation fails or the
+     * specified hospital does not exist, it responds with a status of {@link HttpStatus#NOT_ACCEPTABLE}.
+     *
+     * @param user The user information provided in the request body.
+     * @return A {@link ResponseEntity} containing the created user or an error status.
+     * 
+     * @see HospitalService#addUser(Long, User) {@link HospitalService#addUser(Long, User)}, method
+     */
     @PostMapping(value = "/createUser", consumes = { "application/json", "application/xml" })
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return hospitalService
@@ -34,12 +69,47 @@ public class AdminController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE));
     }
 
+    /**
+     * Deletes a user associated with a hospital based on the specified group ID and user ID.
+     *
+     * <p>This method is mapped to the HTTP DELETE request for the path
+     * {@code "/admin/deleteUser/{gid}/{uid}"}. It consumes JSON or XML data in the request body.
+     * The method delegates the user deletion operation to the {@link HospitalService} and returns
+     * an appropriate response.
+     *
+     * <p>If the user deletion is successful, it responds with a status of {@link HttpStatus#OK}.
+     * If the user deletion fails or the specified hospital or user does not exist, it responds
+     * with a status of {@link HttpStatus#NOT_ACCEPTABLE}.
+     *
+     * @param gid The group ID associated with the hospital.
+     * @param uid The user ID to be deleted.
+     * @return A {@link ResponseEntity} indicating the success or failure of the user deletion operation.
+     *
+     * @see HospitalService#deleteUser(Long, Long) {@link HospitalService#deleteUser(Long, Long)}, method
+    */
     @DeleteMapping(value = "/deleteUser/{gid}/{uid}", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Object> deleteUser(@PathVariable long gid, @PathVariable long uid) {
         return hospitalService.deleteUser(gid, uid) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
+    /**
+     * Modifies the information of an existing user associated with a hospital and returns the corresponding response.
+     *
+     * <p>This method is mapped to the HTTP PUT request for the path {@code "/admin/modifyUser"}.
+     * It consumes JSON or XML data in the request body. The method delegates the user modification
+     * operation to the {@link HospitalService} and returns an appropriate response.
+     *
+     * <p>If the user modification is successful, it responds with a status of {@link HttpStatus#OK}
+     * and includes the modified user in the response body. If the user modification fails or the
+     * specified hospital or user does not exist, it responds with a status of
+     * {@link HttpStatus#NOT_MODIFIED}.
+     *
+     * @param user The modified user information provided in the request body.
+     * @return A {@link ResponseEntity} containing the modified user or an error status.
+     *
+     * @see HospitalService#modifyUser(Long, User) {@link HospitalService#modifyUser(Long, User)}, method
+     */
     @PutMapping(value = "/modifyUser", consumes = { "application/json", "application/xml" })
     public ResponseEntity<User> modifyUser(@RequestBody User user) {
         return hospitalService
@@ -48,11 +118,19 @@ public class AdminController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
+    /**
+     * Creates a new hospital by adding it to the repository.
+     *
+     * @param hospital The Hospital object representing the hospital to be created.
+     * @return A ResponseEntity containing the created Hospital object and HTTP status OK if successful,
+     *         or an appropriate HTTP status if an error occurs.
+     */
     @PostMapping(value = "/createHospital", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
         return new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
     }
 
+    
     @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Object> deleteHospital(@PathVariable long gid) {
         return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK)
