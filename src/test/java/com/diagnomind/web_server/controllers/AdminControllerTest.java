@@ -1,8 +1,6 @@
 package com.diagnomind.web_server.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.Optional;
 
 import org.easymock.EasyMock;
@@ -40,7 +38,6 @@ class AdminControllerTest extends EasyMockSupport {
 
     @Test
     void createUserTest() {
-        fail();
         User user = new User();
         user.setHospital(hospital);
         EasyMock.expect(mockHospitalService.addUser(GID, user)).andReturn(Optional.of(user));
