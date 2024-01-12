@@ -7,6 +7,7 @@ import com.diagnomind.web_server.domain.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -72,7 +73,7 @@ public class Hospital {
     /**
      * The list of users associated with the hospital.
      */
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private List<User> users;
 
     /**
