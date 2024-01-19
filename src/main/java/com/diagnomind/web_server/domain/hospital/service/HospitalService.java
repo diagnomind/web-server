@@ -10,17 +10,25 @@ import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
 import com.diagnomind.web_server.domain.user.model.User;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The {@code HospitalService} class provides services related to hospital operations.
+ * The {@code HospitalService} class provides services related to hospital
+ * operations.
  *
- * <p>This class is annotated with {@link org.springframework.stereotype.Service}, indicating
- * that it serves as a service component in a Spring application. It is also annotated with
- * {@link lombok.RequiredArgsConstructor}, which automatically generates a constructor with
+ * <p>
+ * This class is annotated with {@link org.springframework.stereotype.Service},
+ * indicating
+ * that it serves as a service component in a Spring application. It is also
+ * annotated with
+ * {@link lombok.RequiredArgsConstructor}, which automatically generates a
+ * constructor with
  * required arguments.
  *
- * <p>The services provided by this class include operations for managing users associated with hospitals.
+ * <p>
+ * The services provided by this class include operations for managing users
+ * associated with hospitals.
  *
  * @author Diagnomind
  * @version 1.0
@@ -35,12 +43,13 @@ public class HospitalService {
     /**
      * Adds a user to a hospital based on the hospital's ID.
      *
-     * @param gid The ID of the hospital to which the user will be added.
+     * @param gid  The ID of the hospital to which the user will be added.
      * @param user The User object to be added to the hospital.
-     * @return An Optional containing the User object if the hospital with the given ID is found,
+     * @return An Optional containing the User object if the hospital with the given
+     *         ID is found,
      *         or an empty Optional if the hospital is not found.
      */
-    public Optional<User> addUser(Long gid, User user) {
+    public Optional<User> addUser(@NonNull Long gid, User user) {
         return hospitalRepository
                 .findById(gid)
                 .map(hospital -> {
@@ -54,10 +63,11 @@ public class HospitalService {
      *
      * @param gid The ID of the hospital to search for.
      * @param uid The ID of the user to retrieve.
-     * @return An Optional containing the User object if both the hospital and user are found,
+     * @return An Optional containing the User object if both the hospital and user
+     *         are found,
      *         or an empty Optional if either the hospital or user is not found.
      */
-    public Optional<User> getUser(Long gid, Long uid) {
+    public Optional<User> getUser(@NonNull Long gid, Long uid) {
         return hospitalRepository
                 .findById(gid)
                 .flatMap(hospital -> hospital
@@ -70,13 +80,15 @@ public class HospitalService {
     }
 
     /**
-     * Retrieves a list of all users associated with a specific hospital based on the hospital ID.
+     * Retrieves a list of all users associated with a specific hospital based on
+     * the hospital ID.
      *
      * @param gid The ID of the hospital to retrieve users from.
-     * @return A List containing all User objects associated with the specified hospital,
+     * @return A List containing all User objects associated with the specified
+     *         hospital,
      *         or an empty List if the hospital is not found.
      */
-    public List<User> getAllUsers(Long gid) {
+    public List<User> getAllUsers(@NonNull Long gid) {
         return hospitalRepository
                 .findById(gid)
                 .map(Hospital::getUsers)
@@ -84,16 +96,19 @@ public class HospitalService {
     }
 
     /**
-     * Modifies a user in a specific hospital based on hospital ID and the modified user details.
+     * Modifies a user in a specific hospital based on hospital ID and the modified
+     * user details.
      *
-     * @param gid           The ID of the hospital where the user is to be modified.
-     * @param modifiedUser  The User object containing the modified details to be applied.
-     * @return An Optional containing the modified User object if both the hospital and user are found,
+     * @param gid          The ID of the hospital where the user is to be modified.
+     * @param modifiedUser The User object containing the modified details to be
+     *                     applied.
+     * @return An Optional containing the modified User object if both the hospital
+     *         and user are found,
      *         or an empty Optional if either the hospital or user is not found.
      */
-    public Optional<User> modifyUser(Long gid, User modifiedUser) {
-        return hospitalRepository
-                .findById(gid)
+    public Optional<User> modifyUser(@NonNull Long gid, User modifiedUser) {
+        Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
+        Optional<User> foundModifiedUser = foundHospital
                 .flatMap(hospital -> hospital
                         .getUsers()
                         .stream()
@@ -101,7 +116,16 @@ public class HospitalService {
                                 .getId()
                                 .equals(modifiedUser.getId()))
                         .findFirst()
-                        .map(foundUser -> foundUser.update(modifiedUser)));
+                        .map(user -> user.update(modifiedUser)));
+
+        foundModifiedUser
+                .ifPresent(user -> foundHospital
+                        .ifPresent(hospital -> {
+                            hospital.getUsers().add(user);
+                            hospitalRepository.save(hospital);
+                        }));
+
+        return foundModifiedUser;
     }
 
     /**
@@ -109,17 +133,28 @@ public class HospitalService {
      *
      * @param gid The ID of the hospital where the user is to be deleted.
      * @param uid The ID of the user to be deleted.
-     * @return {@code true} if the user is successfully deleted, {@code false} if either the hospital
+     * @return {@code true} if the user is successfully deleted, {@code false} if
+     *         either the hospital
      *         or user is not found, or if the user deletion operation fails.
      */
-    public boolean deleteUser(Long gid, Long uid) {
+    public boolean deleteUser(@NonNull Long gid, Long uid) {
+        // Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
+        // foundHospital.map(hospital -> {
+        //     boolean isRemoved = hosp
+        // })
+        // foundHospital.ifPresent(null);
         return hospitalRepository
                 .findById(gid)
-                .map(hospital -> hospital
-                        .getUsers()
-                        .removeIf(user -> user
-                                .getId()
-                                .equals(uid)))
+                .map(hospital -> {
+                    boolean isRemoved = hospital
+                            .getUsers()
+                            .removeIf(user -> user
+                                    .getId()
+                                    .equals(uid));
+                    hospitalRepository.delete(hospital);
+                    hospitalRepository.save(hospital);
+                    return isRemoved;
+                })
                 .orElse(false);
     }
 
@@ -138,7 +173,8 @@ public class HospitalService {
      *
      * @param gid The ID of the hospital to retrieve.
      * @return An Optional containing the Hospital object if found,
-     *         or an empty Optional if the hospital with the given ID is not present in the repository.
+     *         or an empty Optional if the hospital with the given ID is not present
+     *         in the repository.
      */
     public Optional<Hospital> getHospital(Long gid) {
         return hospitalRepository.findById(gid);
@@ -158,9 +194,11 @@ public class HospitalService {
     /**
      * Modifies a hospital based on the provided modified hospital details.
      *
-     * @param modifiedHospital The Hospital object containing the modified details to be applied.
+     * @param modifiedHospital The Hospital object containing the modified details
+     *                         to be applied.
      * @return An Optional containing the modified Hospital object if found,
-     *         or an empty Optional if the hospital with the given ID is not present in the repository.
+     *         or an empty Optional if the hospital with the given ID is not present
+     *         in the repository.
      */
     public Optional<Hospital> modifyHospital(Hospital modifiedHospital) {
         return hospitalRepository
@@ -172,7 +210,8 @@ public class HospitalService {
      * Deletes a hospital from the repository based on its ID.
      *
      * @param gid The ID of the hospital to be deleted.
-     * @return {@code true} if the hospital is successfully deleted, {@code false} otherwise.
+     * @return {@code true} if the hospital is successfully deleted, {@code false}
+     *         otherwise.
      */
     public boolean deleteHospital(Long gid) {
         hospitalRepository.deleteById(gid);

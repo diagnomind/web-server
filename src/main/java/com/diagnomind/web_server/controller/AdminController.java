@@ -1,8 +1,11 @@
 package com.diagnomind.web_server.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,8 +116,8 @@ public class AdminController {
      * @see HospitalService#deleteUser(Long, Long)
      *      {@link HospitalService#deleteUser(Long, Long)}, method
      */
-    @DeleteMapping(value = "/deleteUser/{gid}/{uid}", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<Object> deleteUser(@PathVariable long gid, @PathVariable long uid) {
+    @DeleteMapping(value = "/deleteUser/{gid}/{uid}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long gid, @PathVariable Long uid) {
         return hospitalService.deleteUser(gid, uid) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
@@ -181,7 +184,7 @@ public class AdminController {
      * @see HospitalService#deleteHospital(Long)
      *      {@link HospitalService#deleteHospital(Long)}, method
      */
-    @DeleteMapping(value = "deleteHospital/{gid}", consumes = { "application/json", "application/xml" })
+    @DeleteMapping(value = "deleteHospital/{gid}", produces = { "application/json", "application/xml" })
     public ResponseEntity<Object> deleteHospital(@PathVariable long gid) {
         return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -228,24 +231,29 @@ public class AdminController {
     public ResponseEntity<List<User>> getUsers(@PathVariable Long gid) {
 
         List<User> userList = hospitalService.getAllUsers(gid);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         if (userList.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+            return new ResponseEntity<>(userList, headers, HttpStatus.OK);
         }
 
     }
 
     @GetMapping(value = "/showHospitals", produces = { "application/json", "application/xml" })
     public ResponseEntity<List<Hospital>> getHospitals() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(hospitalService.getAllHospitals(), headers, HttpStatus.OK);
+    }
 
-        List<Hospital> hospitalList = hospitalService.getAllHospitals();
-
-        if (hospitalList.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return new ResponseEntity<>(hospitalList, HttpStatus.OK);
-        }
+    @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml"} )
+    public ResponseEntity<User> updateUser(@PathVariable Long gid, @RequestBody User user) {
+        return hospitalService
+                .modifyUser(gid, user)
+                .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 }

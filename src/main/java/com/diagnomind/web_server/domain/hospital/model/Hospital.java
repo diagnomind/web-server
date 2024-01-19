@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.diagnomind.web_server.domain.user.model.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -68,12 +69,12 @@ public class Hospital {
      * The end date of the hospital's subscription. Cannot be null.
      */
     @Column(nullable = false, name = "subscription_end")
-    private Date subsriptionEnd;
+    private Date subscriptionEnd;
 
     /**
      * The list of users associated with the hospital.
      */
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "id")
     private List<User> users;
 
     /**
@@ -81,12 +82,14 @@ public class Hospital {
      *
      * @param hospital The Hospital object containing the modified details to be applied.
      * @return The updated Hospital object.
-     */
+    **/
+
+
     public Hospital update(Hospital hospital) {
         this.name = hospital.getName();
         this.subscriptionPlan = hospital.getSubscriptionPlan();
         this.subscriptionStart = hospital.getSubscriptionStart();
-        this.subsriptionEnd = hospital.getSubsriptionEnd();
+        this.subscriptionEnd = hospital.getSubscriptionEnd();
         return this;
     }
 }
