@@ -147,17 +147,16 @@ public class AdminController {
      * @see HospitalService#modifyUser(Long, User)
      *      {@link HospitalService#modifyUser(Long, User)}, method
      */
-    @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml"} )
+    @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml" })
     public ResponseEntity<User> updateUser(@PathVariable Long gid, @RequestBody User user) {
         // return hospitalService
-        //         .modifyUser(gid, user)
-        //         .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
-        //         .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
+        // .modifyUser(gid, user)
+        // .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
+        // .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
         return hospitalService
-
-
-        .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
-        .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
+                .modifyUser(gid, user)
+                .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
     /**
