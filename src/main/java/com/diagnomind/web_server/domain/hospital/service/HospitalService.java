@@ -52,7 +52,7 @@ public class HospitalService {
      *         or an empty Optional if the hospital is not found.
      */
     public Optional<User> addUser(@NonNull Long gid, User user) {
-        user.setHospital(hospitalRepository.findById(gid).get());
+        user.setHospital(hospitalRepository.findById(gid).orElseThrow());
         userRepository.save(user);
         return hospitalRepository
                 .findById(gid)
