@@ -140,7 +140,7 @@ class HospitalServiceTest extends EasyMockSupport {
         modifiedHospital.setSubscriptionEnd(new Date(1));
         EasyMock.expect(mockHospitalRepository.findById(GID)).andReturn(Optional.of(hospital));
         EasyMock.replay(mockHospitalRepository);
-        Hospital returnedHospital = hospitalService.modifyHospital(modifiedHospital).get();
+        Hospital returnedHospital = hospitalService.modifyHospital(GID, modifiedHospital).get();
         assertEquals(hospital, returnedHospital);
         assertEquals(modifiedHospital.getName(), returnedHospital.getName());
         assertEquals(modifiedHospital.getSubscriptionPlan(), returnedHospital.getSubscriptionPlan());

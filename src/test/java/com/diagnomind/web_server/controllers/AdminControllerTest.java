@@ -106,9 +106,9 @@ class AdminControllerTest extends EasyMockSupport {
 
     @Test
     void modifyHospitalTest() {
-        EasyMock.expect(mockHospitalService.modifyHospital(hospital)).andReturn(Optional.of(hospital));
+        EasyMock.expect(mockHospitalService.modifyHospital(GID, hospital)).andReturn(Optional.of(hospital));
         EasyMock.replay(mockHospitalService);
-        ResponseEntity<Hospital> response = adminController.modifyHospital(hospital);
+        ResponseEntity<Hospital> response = adminController.modifyHospital(GID, hospital);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(hospital, response.getBody());
         EasyMock.verify(mockHospitalService);
