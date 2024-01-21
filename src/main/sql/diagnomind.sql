@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS 'diagnomind';
 CREATE DATABASE IF NOT EXISTS `diagnomind` DEFAULT CHARACTER SET utf8;
 USE `diagnomind`;
 
@@ -11,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `hospital` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id`          BIGINT,
+  `id`          BIGINT AUTO_INCREMENT,
   `name`        VARCHAR(255) NOT NULL,
   `surname`     VARCHAR(255) NOT NULL,
   `ssn`         VARCHAR(255) NOT NULL,

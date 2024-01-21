@@ -81,10 +81,10 @@ public class AdminController {
      * @see HospitalService#addUser(Long, User)
      *      {@link HospitalService#addUser(Long, User)}, method
      */
-    @PostMapping(value = "/createUser", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    @PostMapping(value = "/{gid}/createUser", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<User> createUser(@PathVariable Long gid, @RequestBody User user) {
         return hospitalService
-                .addUser(user.getHospital().getId(), user)
+                .addUser(gid, user)
                 .map(newUser -> new ResponseEntity<>(newUser, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE));
     }
