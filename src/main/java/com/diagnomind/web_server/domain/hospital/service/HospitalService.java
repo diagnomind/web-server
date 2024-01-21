@@ -210,6 +210,11 @@ public class HospitalService {
      *         in the repository.
      */
     public Optional<Hospital> modifyHospital(@NonNull Long gid, Hospital modifiedHospital) {
+        modifiedHospital.setId(gid);
+        modifiedHospital.setUsers(hospitalRepository.findById(gid).orElseThrow().getUsers());
+        Hospital newHosp = hospitalRepository.findById(gid).orElseThrow().update(modifiedHospital);
+        hospitalRepository.save(newHosp);
+        
         return hospitalRepository
                 .findById(gid)
                 .map(hospital -> hospital.update(modifiedHospital));
