@@ -94,9 +94,9 @@ public class HospitalService {
      */
     public List<User> getAllUsers(@NonNull Long gid) {
         return hospitalRepository
-        .findById(gid)
-        .map(Hospital::getUsers)
-        .orElse(List.of());
+                .findById(gid)
+                .map(Hospital::getUsers)
+                .orElse(List.of());
     }
 
     /**
@@ -111,9 +111,20 @@ public class HospitalService {
      *         or an empty Optional if either the hospital or user is not found.
      */
     public Optional<User> modifyUser(@NonNull Long gid, User modifiedUser) {
-        userRepository.findById(modifiedUser.getId()).get().update(modifiedUser);
-        return hospitalRepository
-                .findById(gid)
+        // userRepository.findById(modifiedUser.getId()).get().update(modifiedUser);
+        // return hospitalRepository
+        // .findById(gid)
+        // .flatMap(hospital -> hospital
+        // .getUsers()
+        // .stream()
+        // .filter(user -> user
+        // .getId()
+        // .equals(modifiedUser.getId()))
+        // .findFirst()
+        // .map(foundUser -> foundUser.update(modifiedUser)));
+        // return userRepository.findById(modifiedUser.getId());
+        Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
+        Optional<User> foundModifiedUser = foundHospital
                 .flatMap(hospital -> hospital
                         .getUsers()
                         .stream()
@@ -121,7 +132,16 @@ public class HospitalService {
                                 .getId()
                                 .equals(modifiedUser.getId()))
                         .findFirst()
-                        .map(foundUser -> foundUser.update(modifiedUser)));
+                        .map(user -> user.update(modifiedUser)));
+
+        foundModifiedUser
+                .ifPresent(user -> foundHospital
+                        .ifPresent(hospital -> {
+                            hospital.getUsers().add(user);
+                            hospitalRepository.save(hospital);
+                        }));
+
+        return foundModifiedUser;
     }
 
     /**
@@ -135,13 +155,13 @@ public class HospitalService {
      */
     public boolean deleteUser(@NonNull Long gid, Long uid) {
         boolean deleted = hospitalRepository
-        .findById(gid)
-        .map(hospital -> hospital
-                .getUsers()
-                .removeIf(user -> user
-                        .getId()
-                        .equals(uid)))
-        .orElse(false);
+                .findById(gid)
+                .map(hospital -> hospital
+                        .getUsers()
+                        .removeIf(user -> user
+                                .getId()
+                                .equals(uid)))
+                .orElse(false);
         userRepository.delete(userRepository.findById(uid).orElseThrow());
 
         return deleted;

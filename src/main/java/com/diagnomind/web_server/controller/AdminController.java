@@ -149,10 +149,15 @@ public class AdminController {
      */
     @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml"} )
     public ResponseEntity<User> updateUser(@PathVariable Long gid, @RequestBody User user) {
+        // return hospitalService
+        //         .modifyUser(gid, user)
+        //         .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
+        //         .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
         return hospitalService
-                .modifyUser(gid, user)
-                .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
+
+
+        .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
     /**
