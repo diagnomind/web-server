@@ -1,6 +1,9 @@
 package com.diagnomind.web_server.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.easymock.EasyMock;
@@ -65,7 +68,7 @@ class AdminControllerTest extends EasyMockSupport {
     }
 
     @Test
-    void modifyUserTest() {
+    void updateUserTest() {
         User user = new User();
         user.setHospital(hospital);
         EasyMock.expect(mockHospitalService.modifyUser(GID, user)).andReturn(Optional.of(user));
@@ -124,4 +127,38 @@ class AdminControllerTest extends EasyMockSupport {
         assertEquals(trainingImage, response.getBody());
         EasyMock.verify(mockTrainingImageService);
     }
+
+    @Test
+    void getUsersEmptyTest() {
+        List<User> list_empty = new ArrayList<>();
+        EasyMock.expect(mockHospitalService.getAllUsers(GID)).andReturn(list_empty);
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<List<User>> response_notFound = adminController.getUsers(GID);
+        assertEquals(HttpStatus.NOT_FOUND, response_notFound.getStatusCode());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void getAllUsersTest() {
+        User user = new User();
+        List<User> list = new ArrayList<>();
+        list.add(user);
+        EasyMock.expect(mockHospitalService.getAllUsers(GID)).andReturn(list);
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<List<User>> response = adminController.getUsers(GID);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        EasyMock.verify(mockHospitalService);
+    }
+
+    @Test
+    void getHospitalsTest() {
+        List<Hospital> list = new ArrayList<>();
+        list.add(hospital);
+        EasyMock.expect(mockHospitalService.getAllHospitals()).andReturn(list);
+        EasyMock.replay(mockHospitalService);
+        ResponseEntity<List<Hospital>> response = adminController.getHospitals();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        EasyMock.verify(mockHospitalService);
+    }
+
 }

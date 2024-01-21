@@ -111,18 +111,6 @@ public class HospitalService {
      *         or an empty Optional if either the hospital or user is not found.
      */
     public Optional<User> modifyUser(@NonNull Long gid, User modifiedUser) {
-        // userRepository.findById(modifiedUser.getId()).get().update(modifiedUser);
-        // return hospitalRepository
-        // .findById(gid)
-        // .flatMap(hospital -> hospital
-        // .getUsers()
-        // .stream()
-        // .filter(user -> user
-        // .getId()
-        // .equals(modifiedUser.getId()))
-        // .findFirst()
-        // .map(foundUser -> foundUser.update(modifiedUser)));
-        // return userRepository.findById(modifiedUser.getId());
         Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
         Optional<User> foundModifiedUser = foundHospital
                 .flatMap(hospital -> hospital
