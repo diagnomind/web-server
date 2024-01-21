@@ -202,10 +202,10 @@ public class AdminController {
      * @see HospitalService#modifyHospital(Hospital)
      *      {@link HospitalService#modifyHospital(Hospital)}, method
      */
-    @PutMapping(value = "/modifyHospital", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<Hospital> modifyHospital(@RequestBody Hospital hospital) {
+    @PutMapping(value = "/modifyHospital/{gid}", consumes = { "application/json", "application/xml" })
+    public ResponseEntity<Hospital> modifyHospital(@PathVariable Long gid, @RequestBody Hospital hospital) {
         return hospitalService
-                .modifyHospital(hospital)
+                .modifyHospital(gid, hospital)
                 .map(modifiedHospital -> new ResponseEntity<>(modifiedHospital, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }

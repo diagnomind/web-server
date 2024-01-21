@@ -189,9 +189,9 @@ public class HospitalService {
      *         or an empty Optional if the hospital with the given ID is not present
      *         in the repository.
      */
-    public Optional<Hospital> modifyHospital(Hospital modifiedHospital) {
+    public Optional<Hospital> modifyHospital(@NonNull Long gid, Hospital modifiedHospital) {
         return hospitalRepository
-                .findById(modifiedHospital.getId())
+                .findById(gid)
                 .map(hospital -> hospital.update(modifiedHospital));
     }
 
