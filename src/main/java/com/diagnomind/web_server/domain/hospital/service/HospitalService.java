@@ -52,6 +52,7 @@ public class HospitalService {
      *         or an empty Optional if the hospital is not found.
      */
     public Optional<User> addUser(@NonNull Long gid, User user) {
+        user.setHospital(hospitalRepository.findById(gid).get());
         userRepository.save(user);
         return hospitalRepository
                 .findById(gid)
@@ -92,10 +93,15 @@ public class HospitalService {
      *         or an empty List if the hospital is not found.
      */
     public List<User> getAllUsers(@NonNull Long gid) {
+        // return hospitalRepository
+        // .findById(gid)
+        // .map(Hospital::getUsers)
+        // .orElse(List.of());
         return hospitalRepository
                 .findById(gid)
-                .map(Hospital::getUsers)
-                .orElse(List.of());
+                .map(hospital -> hospital
+                        .getUsers())
+                .get();
     }
 
     /**
@@ -141,24 +147,17 @@ public class HospitalService {
      *         or user is not found, or if the user deletion operation fails.
      */
     public boolean deleteUser(@NonNull Long gid, Long uid) {
-        // Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
-        // foundHospital.map(hospital -> {
-        //     boolean isRemoved = hosp
-        // })
-        // foundHospital.ifPresent(null);
-        return hospitalRepository
-                .findById(gid)
-                .map(hospital -> {
-                    boolean isRemoved = hospital
-                            .getUsers()
-                            .removeIf(user -> user
-                                    .getId()
-                                    .equals(uid));
-                    hospitalRepository.delete(hospital);
-                    hospitalRepository.save(hospital);
-                    return isRemoved;
-                })
-                .orElse(false);
+        boolean deleted = hospitalRepository
+        .findById(gid)
+        .map(hospital -> hospital
+                .getUsers()
+                .removeIf(user -> user
+                        .getId()
+                        .equals(uid)))
+        .orElse(false);
+        userRepository.delete(userRepository.findById(uid).orElseThrow());
+
+        return deleted;
     }
 
     /**

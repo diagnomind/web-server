@@ -148,10 +148,10 @@ public class AdminController {
      * @see HospitalService#modifyUser(Long, User)
      *      {@link HospitalService#modifyUser(Long, User)}, method
      */
-    @PutMapping(value = "/modifyUser", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<User> modifyUser(@RequestBody User user) {
+    @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml"} )
+    public ResponseEntity<User> updateUser(@PathVariable Long gid, @RequestBody User user) {
         return hospitalService
-                .modifyUser(user.getHospital().getId(), user)
+                .modifyUser(gid, user)
                 .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
@@ -247,13 +247,5 @@ public class AdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(hospitalService.getAllHospitals(), headers, HttpStatus.OK);
-    }
-
-    @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml"} )
-    public ResponseEntity<User> updateUser(@PathVariable Long gid, @RequestBody User user) {
-        return hospitalService
-                .modifyUser(gid, user)
-                .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 }

@@ -74,7 +74,7 @@ public class Hospital {
     /**
      * The list of users associated with the hospital.
      */
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "hospital")
     private List<User> users;
 
     /**
