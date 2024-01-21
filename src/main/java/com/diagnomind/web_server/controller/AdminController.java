@@ -169,7 +169,7 @@ public class AdminController {
      */
     @PostMapping(value = "/createHospital", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
-        return new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.OK);
+        return new ResponseEntity<>(hospitalService.addHospital(hospital), HttpStatus.CREATED);
     }
 
     /**

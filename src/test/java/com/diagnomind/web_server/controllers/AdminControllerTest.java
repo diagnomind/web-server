@@ -70,7 +70,7 @@ class AdminControllerTest extends EasyMockSupport {
         user.setHospital(hospital);
         EasyMock.expect(mockHospitalService.modifyUser(GID, user)).andReturn(Optional.of(user));
         EasyMock.replay(mockHospitalService);
-        ResponseEntity<User> response = adminController.modifyUser(user);
+        ResponseEntity<User> response = adminController.updateUser(GID, user);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
         EasyMock.verify(mockHospitalService);
