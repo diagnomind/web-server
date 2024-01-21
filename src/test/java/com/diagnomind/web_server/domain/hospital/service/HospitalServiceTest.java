@@ -3,7 +3,6 @@ package com.diagnomind.web_server.domain.hospital.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.calls;
 
 import java.sql.Date;
 import java.util.ArrayList;

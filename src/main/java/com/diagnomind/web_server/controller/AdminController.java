@@ -149,10 +149,6 @@ public class AdminController {
      */
     @PutMapping(value = "/updateUser/{gid}", produces = { "application/json", "application/xml" })
     public ResponseEntity<User> updateUser(@PathVariable Long gid, @RequestBody User user) {
-        // return hospitalService
-        // .modifyUser(gid, user)
-        // .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
-        // .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
         return hospitalService
                 .modifyUser(gid, user)
                 .map(modifiedUser -> new ResponseEntity<>(modifiedUser, HttpStatus.OK))
@@ -230,6 +226,16 @@ public class AdminController {
         return new ResponseEntity<>(trainingImageService.addTrainImage(img), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a list of users associated with a specific hospital ID and returns it as a ResponseEntity.
+     *
+     * @param gid The ID of the hospital for which users are to be retrieved.
+     * @return A ResponseEntity containing a List of User objects and HTTP status OK if successful,
+     *         or HTTP status NOT_FOUND if no users are found for the specified hospital.
+     * 
+     * @see HospitalService#getAllUsers(Long)
+     *      {@link HospitalService#getAllUsers(Long)}, method
+     */
     @GetMapping(value = "/showUsers/{gid}", produces = { "application/json", "application/xml" })
     public ResponseEntity<List<User>> getUsers(@PathVariable Long gid) {
 
@@ -242,13 +248,19 @@ public class AdminController {
         } else {
             return new ResponseEntity<>(userList, headers, HttpStatus.OK);
         }
-
     }
 
+    /**
+     * Retrieves a list of all hospitals and returns it as a ResponseEntity.
+     *
+     * @return A ResponseEntity containing a List of Hospital objects and HTTP status OK if successful,
+     *         or an appropriate HTTP status if an error occurs.
+     */
     @GetMapping(value = "/showHospitals", produces = { "application/json", "application/xml" })
     public ResponseEntity<List<Hospital>> getHospitals() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(hospitalService.getAllHospitals(), headers, HttpStatus.OK);
     }
+
 }
