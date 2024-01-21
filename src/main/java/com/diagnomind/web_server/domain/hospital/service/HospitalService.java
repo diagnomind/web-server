@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
 import com.diagnomind.web_server.domain.user.model.User;
+import com.diagnomind.web_server.domain.user.repository.UserRepository;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
+    private final UserRepository userRepository;
 
     /**
      * Adds a user to a hospital based on the hospital's ID.
@@ -50,6 +52,7 @@ public class HospitalService {
      *         or an empty Optional if the hospital is not found.
      */
     public Optional<User> addUser(@NonNull Long gid, User user) {
+        userRepository.save(user);
         return hospitalRepository
                 .findById(gid)
                 .map(hospital -> {
