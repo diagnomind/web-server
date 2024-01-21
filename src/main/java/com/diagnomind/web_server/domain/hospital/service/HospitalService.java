@@ -93,15 +93,10 @@ public class HospitalService {
      *         or an empty List if the hospital is not found.
      */
     public List<User> getAllUsers(@NonNull Long gid) {
-        // return hospitalRepository
-        // .findById(gid)
-        // .map(Hospital::getUsers)
-        // .orElse(List.of());
         return hospitalRepository
-                .findById(gid)
-                .map(hospital -> hospital
-                        .getUsers())
-                .get();
+        .findById(gid)
+        .map(Hospital::getUsers)
+        .orElse(List.of());
     }
 
     /**
@@ -116,8 +111,9 @@ public class HospitalService {
      *         or an empty Optional if either the hospital or user is not found.
      */
     public Optional<User> modifyUser(@NonNull Long gid, User modifiedUser) {
-        Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
-        Optional<User> foundModifiedUser = foundHospital
+        userRepository.findById(modifiedUser.getId()).get().update(modifiedUser);
+        return hospitalRepository
+                .findById(gid)
                 .flatMap(hospital -> hospital
                         .getUsers()
                         .stream()
@@ -125,16 +121,7 @@ public class HospitalService {
                                 .getId()
                                 .equals(modifiedUser.getId()))
                         .findFirst()
-                        .map(user -> user.update(modifiedUser)));
-
-        foundModifiedUser
-                .ifPresent(user -> foundHospital
-                        .ifPresent(hospital -> {
-                            hospital.getUsers().add(user);
-                            hospitalRepository.save(hospital);
-                        }));
-
-        return foundModifiedUser;
+                        .map(foundUser -> foundUser.update(modifiedUser)));
     }
 
     /**

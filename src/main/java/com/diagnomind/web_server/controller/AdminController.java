@@ -1,7 +1,6 @@
 package com.diagnomind.web_server.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
