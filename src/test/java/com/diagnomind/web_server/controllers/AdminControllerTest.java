@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import com.diagnomind.web_server.controller.AdminController;
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
-import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
-import com.diagnomind.web_server.domain.training_image.service.TrainingImageService;
 import com.diagnomind.web_server.domain.user.model.User;
 
 class AdminControllerTest extends EasyMockSupport {
@@ -26,15 +24,13 @@ class AdminControllerTest extends EasyMockSupport {
     private static final Long UID = 1L;
 
     private HospitalService mockHospitalService;
-    private TrainingImageService mockTrainingImageService;
     private AdminController adminController;
     private Hospital hospital;
 
     @BeforeEach
     void setUp() {
         mockHospitalService = createStrictMock(HospitalService.class);
-        mockTrainingImageService = createStrictMock(TrainingImageService.class);
-        adminController = new AdminController(mockHospitalService, mockTrainingImageService);
+        adminController = new AdminController(mockHospitalService);
         hospital = new Hospital();
         hospital.setId(GID);
     }
@@ -53,17 +49,17 @@ class AdminControllerTest extends EasyMockSupport {
 
     @Test
     void deleteUserCorrectTest() {
-        EasyMock.expect(mockHospitalService.deleteUser(GID, UID)).andReturn(true);
+        EasyMock.expect(mockHospitalService.deleteUser(UID)).andReturn(true);
         EasyMock.replay(mockHospitalService);
-        assertEquals(HttpStatus.OK, adminController.deleteUser(GID, UID).getStatusCode());
+        assertEquals(HttpStatus.OK, adminController.deleteUser(UID).getStatusCode());
         EasyMock.verify(mockHospitalService);
     }
 
     @Test
     void deleteUserFailTest() {
-        EasyMock.expect(mockHospitalService.deleteUser(GID, UID)).andReturn(false);
+        EasyMock.expect(mockHospitalService.deleteUser(UID)).andReturn(false);
         EasyMock.replay(mockHospitalService);
-        assertEquals(HttpStatus.NOT_ACCEPTABLE, adminController.deleteUser(GID, UID).getStatusCode());
+        assertEquals(HttpStatus.NOT_ACCEPTABLE, adminController.deleteUser(UID).getStatusCode());
         EasyMock.verify(mockHospitalService);
     }
 
@@ -118,28 +114,7 @@ class AdminControllerTest extends EasyMockSupport {
     }
 
     @Test
-    void uploadImageTest() {
-        TrainingImage trainingImage = new TrainingImage();
-        EasyMock.expect(mockTrainingImageService.addTrainImage(trainingImage)).andReturn(trainingImage);
-        EasyMock.replay(mockTrainingImageService);
-        ResponseEntity<TrainingImage> response = adminController.uploadImage(trainingImage);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(trainingImage, response.getBody());
-        EasyMock.verify(mockTrainingImageService);
-    }
-
-    @Test
-    void getUsersEmptyTest() {
-        List<User> list_empty = new ArrayList<>();
-        EasyMock.expect(mockHospitalService.getAllUsers(GID)).andReturn(list_empty);
-        EasyMock.replay(mockHospitalService);
-        ResponseEntity<List<User>> response_notFound = adminController.getUsers(GID);
-        assertEquals(HttpStatus.NOT_FOUND, response_notFound.getStatusCode());
-        EasyMock.verify(mockHospitalService);
-    }
-
-    @Test
-    void getAllUsersTest() {
+    void getUsersTest() {
         User user = new User();
         List<User> list = new ArrayList<>();
         list.add(user);

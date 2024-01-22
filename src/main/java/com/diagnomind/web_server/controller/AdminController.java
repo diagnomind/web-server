@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
-import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
-import com.diagnomind.web_server.domain.training_image.service.TrainingImageService;
 import com.diagnomind.web_server.domain.user.model.User;
 
 import lombok.AccessLevel;
@@ -52,7 +50,6 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final HospitalService hospitalService;
-    private final TrainingImageService trainingImageService;
 
     /**
      * Creates a new user associated with a hospital and returns the corresponding
@@ -80,7 +77,7 @@ public class AdminController {
      * @see HospitalService#addUser(Long, User)
      *      {@link HospitalService#addUser(Long, User)}, method
      */
-    @PostMapping(value = "/{gid}/createUser", consumes = { "application/json", "application/xml" })
+    @PostMapping(value = "/createUser/{gid}", consumes = { "application/json", "application/xml" })
     public ResponseEntity<User> createUser(@PathVariable Long gid, @RequestBody User user) {
         return hospitalService
                 .addUser(gid, user)
@@ -115,9 +112,9 @@ public class AdminController {
      * @see HospitalService#deleteUser(Long, Long)
      *      {@link HospitalService#deleteUser(Long, Long)}, method
      */
-    @DeleteMapping(value = "/deleteUser/{gid}/{uid}")
-    public ResponseEntity<User> deleteUser(@PathVariable Long gid, @PathVariable Long uid) {
-        return hospitalService.deleteUser(gid, uid) ? new ResponseEntity<>(HttpStatus.OK)
+    @DeleteMapping(value = "/deleteUser/{uid}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long uid) {
+        return hospitalService.deleteUser(uid) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
@@ -211,22 +208,6 @@ public class AdminController {
     }
 
     /**
-     * Uploads a training image by adding it to the repository.
-     *
-     * @param img The TrainingImage object representing the image to be uploaded.
-     * @return A ResponseEntity containing the uploaded TrainingImage object and
-     *         HTTP status OK if successful,
-     *         or an appropriate HTTP status if an error occurs.
-     * 
-     * @see TrainingImageService#addTrainImage(TrainingImage)
-     *      {@link TrainingImageService#addTrainImage(TrainingImage)}, method
-     */
-    @PostMapping(value = "/uploadImage", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<TrainingImage> uploadImage(@RequestBody TrainingImage img) {
-        return new ResponseEntity<>(trainingImageService.addTrainImage(img), HttpStatus.OK);
-    }
-
-    /**
      * Retrieves a list of users associated with a specific hospital ID and returns it as a ResponseEntity.
      *
      * @param gid The ID of the hospital for which users are to be retrieved.
@@ -238,16 +219,10 @@ public class AdminController {
      */
     @GetMapping(value = "/showUsers/{gid}", produces = { "application/json", "application/xml" })
     public ResponseEntity<List<User>> getUsers(@PathVariable Long gid) {
-
         List<User> userList = hospitalService.getAllUsers(gid);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-        if (userList.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return new ResponseEntity<>(userList, headers, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(userList, headers, HttpStatus.OK);
     }
 
     /**

@@ -11,7 +11,6 @@ import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
 import com.diagnomind.web_server.domain.user.model.User;
 import com.diagnomind.web_server.domain.user.repository.UserRepository;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -51,15 +50,11 @@ public class HospitalService {
      *         ID is found,
      *         or an empty Optional if the hospital is not found.
      */
-    public Optional<User> addUser(@NonNull Long gid, User user) {
-        user.setHospital(hospitalRepository.findById(gid).orElseThrow());
-        userRepository.save(user);
-        return hospitalRepository
-                .findById(gid)
-                .map(hospital -> {
-                    hospital.getUsers().add(user);
-                    return user;
-                });
+    public Optional<User> addUser(Long gid, User user) {
+        return hospitalRepository.findById(gid).map(hospital -> {
+            user.setHospital(hospital);
+            return userRepository.save(user);
+        });
     }
 
     /**
@@ -71,7 +66,7 @@ public class HospitalService {
      *         are found,
      *         or an empty Optional if either the hospital or user is not found.
      */
-    public Optional<User> getUser(@NonNull Long gid, Long uid) {
+    public Optional<User> getUser(Long gid, Long uid) {
         return hospitalRepository
                 .findById(gid)
                 .flatMap(hospital -> hospital
@@ -92,7 +87,7 @@ public class HospitalService {
      *         hospital,
      *         or an empty List if the hospital is not found.
      */
-    public List<User> getAllUsers(@NonNull Long gid) {
+    public List<User> getAllUsers(Long gid) {
         return hospitalRepository
                 .findById(gid)
                 .map(Hospital::getUsers)
@@ -110,26 +105,11 @@ public class HospitalService {
      *         and user are found,
      *         or an empty Optional if either the hospital or user is not found.
      */
-    public Optional<User> modifyUser(@NonNull Long gid, User modifiedUser) {
-        Optional<Hospital> foundHospital = hospitalRepository.findById(gid);
-        Optional<User> foundModifiedUser = foundHospital
-                .flatMap(hospital -> hospital
-                        .getUsers()
-                        .stream()
-                        .filter(user -> user
-                                .getId()
-                                .equals(modifiedUser.getId()))
-                        .findFirst()
-                        .map(user -> user.update(modifiedUser)));
-
-        foundModifiedUser
-                .ifPresent(user -> foundHospital
-                        .ifPresent(hospital -> {
-                            hospital.getUsers().add(user);
-                            hospitalRepository.save(hospital);
-                        }));
-
-        return foundModifiedUser;
+    public Optional<User> modifyUser(Long gid, User modifiedUser) {
+        return hospitalRepository.findById(gid).map(hospital -> {
+            modifiedUser.setHospital(hospital);
+            return userRepository.save(modifiedUser);
+        });
     }
 
     /**
@@ -141,18 +121,9 @@ public class HospitalService {
      *         either the hospital
      *         or user is not found, or if the user deletion operation fails.
      */
-    public boolean deleteUser(@NonNull Long gid, Long uid) {
-        boolean deleted = hospitalRepository
-                .findById(gid)
-                .map(hospital -> hospital
-                        .getUsers()
-                        .removeIf(user -> user
-                                .getId()
-                                .equals(uid)))
-                .orElse(false);
-        userRepository.delete(userRepository.findById(uid).orElseThrow());
-
-        return deleted;
+    public boolean deleteUser(Long uid) {
+        userRepository.deleteById(uid);
+        return !userRepository.existsById(uid);
     }
 
     /**
@@ -197,15 +168,12 @@ public class HospitalService {
      *         or an empty Optional if the hospital with the given ID is not present
      *         in the repository.
      */
-    public Optional<Hospital> modifyHospital(@NonNull Long gid, Hospital modifiedHospital) {
-        modifiedHospital.setId(gid);
-        modifiedHospital.setUsers(hospitalRepository.findById(gid).orElseThrow().getUsers());
-        Hospital newHosp = hospitalRepository.findById(gid).orElseThrow().update(modifiedHospital);
-        hospitalRepository.save(newHosp);
-        
-        return hospitalRepository
-                .findById(gid)
-                .map(hospital -> hospital.update(modifiedHospital));
+    public Optional<Hospital> modifyHospital(Long gid, Hospital modifiedHospital) {
+        return hospitalRepository.findById(gid).map(hospital -> {
+            modifiedHospital.setId(gid);
+            modifiedHospital.setUsers(hospital.getUsers());
+            return hospitalRepository.save(hospital);
+        });
     }
 
     /**
