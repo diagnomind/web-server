@@ -53,17 +53,17 @@ class AdminControllerTest extends EasyMockSupport {
 
     @Test
     void deleteUserCorrectTest() {
-        EasyMock.expect(mockHospitalService.deleteUser(GID, UID)).andReturn(true);
+        EasyMock.expect(mockHospitalService.deleteUser(UID)).andReturn(true);
         EasyMock.replay(mockHospitalService);
-        assertEquals(HttpStatus.OK, adminController.deleteUser(GID, UID).getStatusCode());
+        assertEquals(HttpStatus.OK, adminController.deleteUser(UID).getStatusCode());
         EasyMock.verify(mockHospitalService);
     }
 
     @Test
     void deleteUserFailTest() {
-        EasyMock.expect(mockHospitalService.deleteUser(GID, UID)).andReturn(false);
+        EasyMock.expect(mockHospitalService.deleteUser(UID)).andReturn(false);
         EasyMock.replay(mockHospitalService);
-        assertEquals(HttpStatus.NOT_ACCEPTABLE, adminController.deleteUser(GID, UID).getStatusCode());
+        assertEquals(HttpStatus.NOT_ACCEPTABLE, adminController.deleteUser(UID).getStatusCode());
         EasyMock.verify(mockHospitalService);
     }
 
@@ -129,17 +129,7 @@ class AdminControllerTest extends EasyMockSupport {
     }
 
     @Test
-    void getUsersEmptyTest() {
-        List<User> list_empty = new ArrayList<>();
-        EasyMock.expect(mockHospitalService.getAllUsers(GID)).andReturn(list_empty);
-        EasyMock.replay(mockHospitalService);
-        ResponseEntity<List<User>> response_notFound = adminController.getUsers(GID);
-        assertEquals(HttpStatus.NOT_FOUND, response_notFound.getStatusCode());
-        EasyMock.verify(mockHospitalService);
-    }
-
-    @Test
-    void getAllUsersTest() {
+    void getUsersTest() {
         User user = new User();
         List<User> list = new ArrayList<>();
         list.add(user);
