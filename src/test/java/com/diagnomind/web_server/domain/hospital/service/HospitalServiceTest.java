@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
-import com.diagnomind.web_server.domain.hospital.model.Hospital.SubscriptionPlan;
 import com.diagnomind.web_server.domain.hospital.repository.HospitalRepository;
 import com.diagnomind.web_server.domain.user.model.User;
 import com.diagnomind.web_server.domain.user.repository.UserRepository;

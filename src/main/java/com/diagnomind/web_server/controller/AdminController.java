@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.diagnomind.web_server.domain.hospital.model.Hospital;
 import com.diagnomind.web_server.domain.hospital.service.HospitalService;
-import com.diagnomind.web_server.domain.training_image.model.TrainingImage;
-import com.diagnomind.web_server.domain.training_image.service.TrainingImageService;
 import com.diagnomind.web_server.domain.user.model.User;
 
 import lombok.AccessLevel;
@@ -52,7 +50,6 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final HospitalService hospitalService;
-    private final TrainingImageService trainingImageService;
 
     /**
      * Creates a new user associated with a hospital and returns the corresponding
@@ -208,22 +205,6 @@ public class AdminController {
                 .modifyHospital(gid, hospital)
                 .map(modifiedHospital -> new ResponseEntity<>(modifiedHospital, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
-    }
-
-    /**
-     * Uploads a training image by adding it to the repository.
-     *
-     * @param img The TrainingImage object representing the image to be uploaded.
-     * @return A ResponseEntity containing the uploaded TrainingImage object and
-     *         HTTP status OK if successful,
-     *         or an appropriate HTTP status if an error occurs.
-     * 
-     * @see TrainingImageService#addTrainImage(TrainingImage)
-     *      {@link TrainingImageService#addTrainImage(TrainingImage)}, method
-     */
-    @PostMapping(value = "/uploadImage", consumes = { "application/json", "application/xml" })
-    public ResponseEntity<TrainingImage> uploadImage(@RequestBody TrainingImage img) {
-        return new ResponseEntity<>(trainingImageService.addTrainImage(img), HttpStatus.OK);
     }
 
     /**
