@@ -1,5 +1,9 @@
 package com.diagnomind.web_server.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Optional;
+
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +22,7 @@ class UserControllerTest extends EasyMockSupport {
     private static final Long UID = 1L;
 
     private Hospital hospital;
-    private UserController usercontroller;
+    private UserController userController;
     private HospitalService mockHospitalService;
 
     @BeforeEach
@@ -30,11 +34,11 @@ class UserControllerTest extends EasyMockSupport {
     }
 
     @Test
-    public void buscarUsuarioTest() {
+    void buscarUsuarioTest() {
         User user = new User();
-        EasyMock.expect(mockHospitalService).getUser(GID, UID).andReturn(user);
+        EasyMock.expect(mockHospitalService.getUser(GID, UID)).andReturn(Optional.of(user));
         EasyMock.replay(mockHospitalService);
-        ResponseEntity<User> response = userController.buscarUsuario(GID, UID)
+        ResponseEntity<User> response = userController.buscarUsuario(GID, UID);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
         EasyMock.verify(mockHospitalService);

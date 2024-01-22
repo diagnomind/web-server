@@ -150,8 +150,7 @@ public class HospitalService {
                                 .getId()
                                 .equals(uid)))
                 .orElse(false);
-        userRepository.delete(userRepository.findById(uid).orElseThrow());
-
+        userRepository.deleteById(uid);
         return deleted;
     }
 

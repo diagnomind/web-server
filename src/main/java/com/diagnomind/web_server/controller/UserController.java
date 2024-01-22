@@ -21,7 +21,6 @@ public class UserController {
 
     private final HospitalService hospitalService;
 
-
     @GetMapping(value = "/login/{gid}/{uid}", produces = { "application/json", "application/json" })
     public ResponseEntity<User> buscarUsuario(@PathVariable Long gid, @PathVariable Long uid) {
         return hospitalService
