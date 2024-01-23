@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS 'diagnomind';
+DROP DATABASE IF EXISTS `diagnomind`;
 CREATE DATABASE IF NOT EXISTS `diagnomind` DEFAULT CHARACTER SET utf8;
 USE `diagnomind`;
 
