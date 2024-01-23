@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.diagnomind.web_server.domain.user.model.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,7 +73,7 @@ public class Hospital {
     /**
      * The list of users associated with the hospital.
      */
-    @OneToMany(mappedBy = "hospital")
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
 
     /**
