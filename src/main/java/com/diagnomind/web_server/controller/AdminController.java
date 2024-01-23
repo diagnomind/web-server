@@ -22,6 +22,10 @@ import com.diagnomind.web_server.domain.user.model.User;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+
+@RestController
+@RequestMapping("/admin")
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 /**
  * The {@code AdminController} class handles administrative operations
  * and exposes endpoints related to administration tasks.
@@ -44,9 +48,6 @@ import lombok.RequiredArgsConstructor;
  * @version 1.0
  * @since 2023-12-15
  */
-@RestController
-@RequestMapping("/admin")
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class AdminController {
 
     private final HospitalService hospitalService;
@@ -70,6 +71,7 @@ public class AdminController {
      * specified hospital does not exist, it responds with a status of
      * {@link HttpStatus#NOT_ACCEPTABLE}.
      *
+     * @param gid  The identifier from the hospital.
      * @param user The user information provided in the request body.
      * @return A {@link ResponseEntity} containing the created user or an error
      *         status.
@@ -104,13 +106,13 @@ public class AdminController {
      * it responds
      * with a status of {@link HttpStatus#NOT_ACCEPTABLE}.
      *
-     * @param gid The group ID associated with the hospital.
+     *
      * @param uid The user ID to be deleted.
      * @return A {@link ResponseEntity} indicating the success or failure of the
      *         user deletion operation.
      *
-     * @see HospitalService#deleteUser(Long, Long)
-     *      {@link HospitalService#deleteUser(Long, Long)}, method
+     * @see HospitalService#deleteUser(Long)
+     *      {@link HospitalService#deleteUser(Long)}, method
      */
     @DeleteMapping(value = "/deleteUser/{uid}")
     public ResponseEntity<User> deleteUser(@PathVariable Long uid) {
@@ -136,7 +138,8 @@ public class AdminController {
      * fails or the
      * specified hospital or user does not exist, it responds with a status of
      * {@link HttpStatus#NOT_MODIFIED}.
-     *
+     * 
+     * @param gid  The group ID associated with the hospital.
      * @param user The modified user information provided in the request body.
      * @return A {@link ResponseEntity} containing the modified user or an error
      *         status.
@@ -195,9 +198,9 @@ public class AdminController {
      *         status OK if successful,
      *         or HTTP status NOT_MODIFIED if the hospital modification operation
      *         fails.
-     * 
-     * @see HospitalService#modifyHospital(Hospital)
-     *      {@link HospitalService#modifyHospital(Hospital)}, method
+     * @param gid The group ID associated with the hospital.
+     * @see HospitalService#modifyHospital(Long,Hospital)
+     *      {@link HospitalService#modifyHospital(Long,Hospital)}, method
      */
     @PutMapping(value = "/modifyHospital/{gid}", consumes = { "application/json", "application/xml" })
     public ResponseEntity<Hospital> modifyHospital(@PathVariable Long gid, @RequestBody Hospital hospital) {
@@ -208,11 +211,14 @@ public class AdminController {
     }
 
     /**
-     * Retrieves a list of users associated with a specific hospital ID and returns it as a ResponseEntity.
+     * Retrieves a list of users associated with a specific hospital ID and returns
+     * it as a ResponseEntity.
      *
      * @param gid The ID of the hospital for which users are to be retrieved.
-     * @return A ResponseEntity containing a List of User objects and HTTP status OK if successful,
-     *         or HTTP status NOT_FOUND if no users are found for the specified hospital.
+     * @return A ResponseEntity containing a List of User objects and HTTP status OK
+     *         if successful,
+     *         or HTTP status NOT_FOUND if no users are found for the specified
+     *         hospital.
      * 
      * @see HospitalService#getAllUsers(Long)
      *      {@link HospitalService#getAllUsers(Long)}, method
@@ -228,7 +234,8 @@ public class AdminController {
     /**
      * Retrieves a list of all hospitals and returns it as a ResponseEntity.
      *
-     * @return A ResponseEntity containing a List of Hospital objects and HTTP status OK if successful,
+     * @return A ResponseEntity containing a List of Hospital objects and HTTP
+     *         status OK if successful,
      *         or an appropriate HTTP status if an error occurs.
      */
     @GetMapping(value = "/showHospitals", produces = { "application/json", "application/xml" })

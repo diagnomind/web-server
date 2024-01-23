@@ -115,7 +115,6 @@ public class HospitalService {
     /**
      * Deletes a user from a specific hospital based on hospital and user IDs.
      *
-     * @param gid The ID of the hospital where the user is to be deleted.
      * @param uid The ID of the user to be deleted.
      * @return {@code true} if the user is successfully deleted, {@code false} if
      *         either the hospital
@@ -162,6 +161,7 @@ public class HospitalService {
     /**
      * Modifies a hospital based on the provided modified hospital details.
      *
+     * @param gid              The ID of the hospital to retrieve.
      * @param modifiedHospital The Hospital object containing the modified details
      *                         to be applied.
      * @return An Optional containing the modified Hospital object if found,

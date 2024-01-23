@@ -16,22 +16,31 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Represents a hospital entity with details such as name, subscription plan, and subscription period.
- * The class includes methods for updating hospital information.
- */
 @Getter
 @Setter
 @Entity
 @Table(name = "hospital")
+/**
+ * Represents a hospital entity with details such as name, subscription plan, and subscription period.
+ * The class includes methods for updating hospital information.
+ */
 public class Hospital {
     
     /**
      * Enumeration representing possible subscription plans for the hospital.
      */
     public enum SubscriptionPlan {
+        /*
+         *no subcription plan 
+         */
         NONE,
+        /*
+         *no subcription plan 
+         */
         STANDARD,
+        /*
+         *Deluxe subcription plan 
+         */
         DELUXE,
     }
 

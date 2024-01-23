@@ -14,15 +14,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Represents a user entity with details such as name, surname, and social security number (SSN),
- * associated with a specific hospital.
- */
 @Getter
 @Setter
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
+/**
+ * Represents a user entity with details such as name, surname, and social security number (SSN),
+ * associated with a specific hospital.
+ */
 public class User {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 1L;
