@@ -180,7 +180,7 @@ public class AdminController {
      * @see HospitalService#deleteHospital(Long)
      *      {@link HospitalService#deleteHospital(Long)}, method
      */
-    @DeleteMapping(value = "deleteHospital/{gid}", produces = { "application/json", "application/xml" })
+    @DeleteMapping(value = "/deleteHospital/{gid}", produces = { "application/json", "application/xml" })
     public ResponseEntity<Object> deleteHospital(@PathVariable long gid) {
         return (hospitalService.deleteHospital(gid)) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);

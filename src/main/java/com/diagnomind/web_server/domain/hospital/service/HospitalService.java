@@ -170,8 +170,10 @@ public class HospitalService {
      */
     public Optional<Hospital> modifyHospital(Long gid, Hospital modifiedHospital) {
         return hospitalRepository.findById(gid).map(hospital -> {
-            modifiedHospital.setId(gid);
-            modifiedHospital.setUsers(hospital.getUsers());
+            hospital.setName(modifiedHospital.getName());
+            hospital.setSubscriptionPlan(modifiedHospital.getSubscriptionPlan());
+            hospital.setSubscriptionStart(modifiedHospital.getSubscriptionStart());
+            hospital.setSubscriptionEnd(modifiedHospital.getSubscriptionEnd());
             return hospitalRepository.save(hospital);
         });
     }
