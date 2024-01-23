@@ -26,9 +26,10 @@ $> mvn javadoc:javadoc
 
 ## Usage
 
-To use this web-server, firstly it is needed to run the [SQL script](src/main/sql/diagnomind.sql) on a mariaDB server, and then run this project with:
+To use this web-server, firstly it is needed to run the [SQL script](src/main/sql/diagnomind.sql) on a mariaDB server, and then run this project with this command (Java 21 necessary):
 ```
 $> java -jar target/web_server-1.0.0.jar
+$> SPRING_PROFILES_ACTIVE=1 DB_URL=<URL> DB_PORT=<PORT> DB_USER_NAME=<NAME> DB_USER_PASSWORD=<PASSWORD> java -server -jar target/web_server-1.0.0.jar
 ```
 
 ## Credits
