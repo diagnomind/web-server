@@ -1,4 +1,4 @@
-# Diagnomind
+# web-server
 [![Java CI with Maven](https://github.com/diagnomind/web-server/actions/workflows/ci-maven.yml/badge.svg)](https://github.com/diagnomind/web-server/actions/workflows/ci-maven.yml)
 
 [![Quality Gate Status](https://sonarqube.diagnomind.duckdns.org/api/project_badges/measure?project=web-server&metric=alert_status&token=sqb_a86c0409bcd97e57da58d55b041a4b0afa26738e)](https://sonarqube.diagnomind.duckdns.org/dashboard?id=web-server)
