@@ -20,17 +20,3 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `USER_PK` PRIMARY KEY (`id`), 
   CONSTRAINT `USER_HOSPITAL_FK` FOREIGN KEY (`hospital_id`) REFERENCES `hospital`(`id`)
 ) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `training_image` (
-  `id`                    BIGINT AUTO_INCREMENT,
-  `is_correct_diagnosis`  BOOL NOT NULL,
-  CONSTRAINT `TRAINING_IMAGE_PK` PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `image` (
-  `id`                BIGINT AUTO_INCREMENT,
-  `image_data`        MEDIUMBLOB NOT NULL, -- blob 32Mb
-  `training_image_id` BIGINT NOT NULL,
-  CONSTRAINT `IMAGE_PK` PRIMARY KEY(`id`),
-  CONSTRAINT `IMAGE_TRAINING_IMAGE` FOREIGN KEY (`training_image_id`) REFERENCES `training_image`(`id`)
-) ENGINE = InnoDB;
